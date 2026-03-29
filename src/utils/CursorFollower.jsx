@@ -8,13 +8,11 @@ export default function CursorFollower() {
 
   const mouse = useRef({ x: 0, y: 0 });
   const current = useRef({ x: 0, y: 0 });
-  const previous = useRef({ x: 0, y: 0 });
 
   const { variant, text, size } = useCursor();
 
   useEffect(() => {
     const el = ref.current;
-    const speed = 0.07;
 
     let rafId;
 
@@ -25,41 +23,25 @@ export default function CursorFollower() {
       if (el) el.style.opacity = "1";
     };
 
+    const speed = 0.05; // 🔥 adjust here (0.05–0.12 range)
+
     const animate = () => {
-      // 👉 smooth follow
-      current.current.x +=
-        (mouse.current.x - current.current.x) * speed;
+      const dx = mouse.current.x - current.current.x;
+      const dy = mouse.current.y - current.current.y;
 
-      current.current.y +=
-        (mouse.current.y - current.current.y) * speed;
+      current.current.x += dx * speed;
+      current.current.y += dy * speed;
 
-      // 👉 calculate velocity
-      const dx = current.current.x - previous.current.x;
-      const dy = current.current.y - previous.current.y;
-
-      const velocity = Math.sqrt(dx * dx + dy * dy);
-
-      // 👉 direction angle
-      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-
-      // 👉 stretch values (clamped)
-      const stretch = Math.min(velocity * 0.05, 0.35);
-
-      const scaleX = 1 + stretch;
-      const scaleY = 1 - stretch;
+      // 🔥 snap when very close (removes float lag)
+      if (Math.abs(dx) < 0.1) current.current.x = mouse.current.x;
+      if (Math.abs(dy) < 0.1) current.current.y = mouse.current.y;
 
       if (el) {
         el.style.transform = `
           translate3d(${current.current.x}px, ${current.current.y}px, 0)
           translate(-50%, -50%)
-          rotate(${angle}deg)
-          scale(${scaleX}, ${scaleY})
         `;
       }
-
-      // 👉 store previous position
-      previous.current.x = current.current.x;
-      previous.current.y = current.current.y;
 
       rafId = requestAnimationFrame(animate);
     };

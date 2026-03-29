@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
+import TransitionLink from "./TransitionLink";
 import { navLinks } from "@/constants";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useCursor } from "@/contexts/CursorContext";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -72,9 +73,9 @@ export default function Header() {
       <div className={`max-w-screen-2xl mx-auto px-12 h-12 flex items-center justify-between transition-all duration-500 pointer-events-auto`}>
         
         {/* Logo */}
-        <Link href="/" className="text-xl font-bold text-primary tracking-tighter flex items-center gap-1 group">
+        <TransitionLink href="/" className="text-xl font-bold text-primary tracking-tighter flex items-center gap-1 group">
           FIMCO<span className="text-accent group-hover:scale-125 transition-transform duration-300">.</span>
-        </Link>
+        </TransitionLink>
 
         {/* Navigation Wrapper - Invisible per request, but captures hover */}
         <div 
@@ -108,10 +109,21 @@ export default function Header() {
 
 function NavLink({ href, label, highlight }) {
   const underlineRef = useRef(null);
-    const { setVariant, setSize, setText } = useCursor();
+  const { setVariant, setSize, setText } = useCursor();
+  const pathname = usePathname();
+  const isActive = pathname === href;
+
+  // 👉 Sync underline with active state
+  useGSAP(() => {
+    if (isActive) {
+      gsap.to(underlineRef.current, { x: "0%", opacity: 1, duration: 0.4, ease: "power2.out" });
+    } else {
+      gsap.to(underlineRef.current, { x: "-100%", opacity: 0, duration: 0.4, ease: "power2.in" });
+    }
+  }, { dependencies: [isActive], scope: underlineRef });
 
   const handleMouseEnter = (e) => {
-    // Premium sliding underline: enters from left
+    // Always show hover animation for interaction feedback
     gsap.set(underlineRef.current, { x: "-100%", opacity: 1 });
     gsap.to(underlineRef.current, { 
       x: "0%", 
@@ -119,35 +131,39 @@ function NavLink({ href, label, highlight }) {
       ease: "power2.out" 
     });
 
-
-     // 👉 Cursor logic (NEW)
-  const width = e.currentTarget.offsetWidth;
-
-  setVariant("link");
-  setSize(width + 10); // padding
-  setText("");
+    const width = e.currentTarget.offsetWidth;
+    setVariant("link");
+    setSize(width + 10);
+    setText("");
   };
 
   const handleMouseLeave = () => {
-    // Premium sliding underline: exits to right
-    gsap.to(underlineRef.current, { 
-      x: "100%", 
-      duration: 0.4, 
-      ease: "power2.in",
-      onComplete: () => {
-        gsap.set(underlineRef.current, { x: "-100%", opacity: 0 });
-      }
-    });
+    if (isActive) {
+      // Return to active state
+      gsap.to(underlineRef.current, { 
+        x: "0%", 
+        duration: 0.4, 
+        ease: "power2.out" 
+      });
+    } else {
+      // Exit animation for non-active links
+      gsap.to(underlineRef.current, { 
+        x: "100%", 
+        duration: 0.4, 
+        ease: "power2.in",
+        onComplete: () => {
+          gsap.set(underlineRef.current, { x: "-100%", opacity: 0 });
+        }
+      });
+    }
 
-
-     // 👉 Reset cursor (NEW)
-  setVariant("default");
-  setSize(24);
-  setText("");
+    setVariant("default");
+    setSize(24);
+    setText("");
   };
 
   return (
-    <Link
+    <TransitionLink
       href={href}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -156,8 +172,8 @@ function NavLink({ href, label, highlight }) {
       <span className="relative z-10">{label}</span>
       <span 
         ref={underlineRef}
-        className={`absolute bottom-0 left-0 w-full h-[1.5px] transform -translate-x-full opacity-0 pointer-events-none transition-none ${highlight ? 'bg-accent' : 'bg-primary'}`}
+        className={`absolute bottom-0 left-0 w-full h-[1.5px] opacity-0 -translate-x-full pointer-events-none transition-none ${highlight ? 'bg-accent' : 'bg-primary'}`}
       ></span>
-    </Link>
+    </TransitionLink>
   );
 }

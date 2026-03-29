@@ -2,6 +2,8 @@
 
 import React, { useRef, useEffect } from "react";
 import { motion, useAnimation, useMotionValue } from "framer-motion";
+import TransitionLink from "../shared/TransitionLink";
+import { useCursor } from "@/contexts/CursorContext";
 
 const BLOGS_DATA = [
   {
@@ -47,10 +49,28 @@ const BLOGS_DATA = [
   },
 ];
 
+const CustomArrow = ({ className }) => (
+  <svg
+    viewBox="0 0 35 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+  >
+    <path
+      d="M0 12H34M34 12C27 12 23 8 23 1M34 12C27 12 23 16 23 23"
+      stroke="currentColor"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 export default function Blogs() {
   const containerRef = useRef(null);
   const controls = useAnimation();
   const x = useMotionValue(0);
+  const { setVariant, setSize, setText } = useCursor();
 
   // 🔥 duplicate (required for infinite illusion)
   const loopData = [...BLOGS_DATA, ...BLOGS_DATA];
@@ -99,16 +119,38 @@ export default function Blogs() {
   return (
     <section className="w-full min-h-screen bg-white py-20 px-6 md:px-16 lg:px-24 flex flex-col overflow-hidden select-none">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
-        <h2 className="text-7xl md:text-[120px] tracking-tighter flex flex-row items-center gap-4 leading-[0.85]">
-          <span className="font-bold text-black uppercase">Latest</span>
+      <div className="flex justify-between items-end mb-16 gap-6">
+        <h2 className="text-5xl md:text-8xl font-montserrat tracking-normal flex flex-row items-center gap-4 leading-[0.85]">
+          <span className="font-bold text-black capitalize">Latest</span>
           <span
-            className="uppercase"
+            className="capitalize"
             style={{ WebkitTextStroke: "1.5px #000", color: "transparent" }}
           >
             News
           </span>
         </h2>
+
+        <TransitionLink
+          href="/blogs"
+          className="group flex items-center text-lg md:text-xl font-montserrat transition-all duration-300"
+        >
+          <motion.div 
+          className="w-fit h-fit flex flex-row items-center gap-2"
+           onMouseEnter={() => {
+                setVariant("link"); // filled style
+                setSize(60); // 👈 BIG cursor
+                setText("");
+              }}
+              onMouseLeave={() => {
+                setVariant("default");
+                setSize(24);
+                setText("");
+              }}
+          >
+            <span>View all</span>
+          <CustomArrow className="w-10 h-auto transition-transform group-hover:translate-x-2" />
+          </motion.div>
+        </TransitionLink>
       </div>
 
       {/* Carousel */}
@@ -125,6 +167,16 @@ export default function Blogs() {
             <motion.div
               key={index}
               className="min-w-[340px] md:min-w-[500px] flex flex-col group"
+              onMouseEnter={() => {
+                setVariant("button"); // filled style
+                setSize(100); // 👈 BIG cursor
+                setText("VIEW");
+              }}
+              onMouseLeave={() => {
+                setVariant("default");
+                setSize(24);
+                setText("");
+              }}
             >
               <div className="relative aspect-16/11 overflow-hidden mb-8 bg-gray-50 border border-gray-100">
                 <img
@@ -134,14 +186,26 @@ export default function Blogs() {
                   className="w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-110"
                 />
 
-                <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity">
-                 
-                </div>
-
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <span className="text-white/20 text-5xl md:text-8xl font-black uppercase tracking-tighter mix-blend-overlay opacity-50">
+                {/* Blurred Overlay - Fades out on hover */}
+                <div className="absolute inset-0 bg-black/20 backdrop-blur-md transition-opacity duration-500 group-hover:opacity-0 flex items-center justify-center">
+                  <span
+                    className="text-white text-5xl md:text-7xl font-oswald uppercase tracking-widest text-center px-4"
+                    style={{
+                      WebkitTextStroke: "1px #fff",
+                      color: "transparent",
+                    }}
+                  >
                     {blog.category}
                   </span>
+                  {/* Optional Grid Pattern */}
+                  <div
+                    className="absolute inset-0 opacity-10 pointer-events-none"
+                    style={{
+                      backgroundImage:
+                        "radial-gradient(circle, #fff 1px, transparent 1px)",
+                      backgroundSize: "20px 20px",
+                    }}
+                  ></div>
                 </div>
               </div>
 
@@ -159,20 +223,42 @@ export default function Blogs() {
       </div>
 
       {/* Controls */}
-      <div className="mt-20 flex items-center gap-8">
-        <button
+      <div className="mt-10 flex items-center gap-5">
+        <motion.button
+         onMouseEnter={() => {
+                setVariant("link"); // filled style
+                setSize(60); // 👈 BIG cursor
+                setText("");
+              }}
+              onMouseLeave={() => {
+                setVariant("default");
+                setSize(24);
+                setText("");
+              }}
           onClick={handlePrev}
-          className="w-20 h-20 rounded-full border border-black/10 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-500"
+          className="w-fit  h-fit  flex items-center justify-center transition-all duration-500 group"
+          aria-label="Previous Slide"
         >
-          ←
-        </button>
+          <CustomArrow className="w-10 h-auto rotate-180" />
+        </motion.button>
 
-        <button
+        <motion.button
+         onMouseEnter={() => {
+                setVariant("link"); // filled style
+                setSize(60); // 👈 BIG cursor
+                setText("");
+              }}
+              onMouseLeave={() => {
+                setVariant("default");
+                setSize(24);
+                setText("");
+              }}
           onClick={handleNext}
-          className="w-20 h-20 rounded-full border border-black/10 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-500"
+          className="w-fit  h-fit    flex items-center justify-center transition-all duration-500 group"
+          aria-label="Next Slide"
         >
-          →
-        </button>
+          <CustomArrow className="w-10 h-auto" />
+        </motion.button>
       </div>
     </section>
   );
