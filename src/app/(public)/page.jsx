@@ -9,15 +9,25 @@ import Loader from "../components/home/Loader";
 import Properties from "../components/home/Properties";
 import Services from "../components/home/Services";
 
+const SESSION_KEY = "fimco_loader_seen";
+
 export default function PublicHomePage() {
-  const [loaderDone, setLoaderDone] = useState(false);
+  // Read sessionStorage synchronously on first render to avoid any flash
+  const [loaderDone, setLoaderDone] = useState(() => {
+    if (typeof window === "undefined") return true; // SSR — skip loader
+    return sessionStorage.getItem(SESSION_KEY) === "1";
+  });
+
+  const handleLoaderComplete = () => {
+    sessionStorage.setItem(SESSION_KEY, "1");
+    setLoaderDone(true);
+  };
 
   return (
     <>
-      {/* Loader — shown once, then wipes away */}
-      <Loader onComplete={() => setLoaderDone(true)} />
+      {/* Loader — only mounts when it hasn't been seen yet this session */}
+      {!loaderDone && <Loader onComplete={handleLoaderComplete} />}
 
-      {/* Page content — rendered underneath the loader */}
       <main>
         <Hero />
         <About />

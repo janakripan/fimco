@@ -4,6 +4,7 @@ import React, { useRef, useEffect } from "react";
 import { motion, useAnimation, useMotionValue } from "framer-motion";
 import TransitionLink from "../shared/TransitionLink";
 import { useCursor } from "@/contexts/CursorContext";
+import CustomArrow from "../icons/CustomArrow";
 
 const BLOGS_DATA = [
   {
@@ -49,22 +50,6 @@ const BLOGS_DATA = [
   },
 ];
 
-const CustomArrow = ({ className }) => (
-  <svg
-    viewBox="0 0 35 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path
-      d="M0 12H34M34 12C27 12 23 8 23 1M34 12C27 12 23 16 23 23"
-      stroke="currentColor"
-      strokeWidth="1.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 export default function Blogs() {
   const containerRef = useRef(null);

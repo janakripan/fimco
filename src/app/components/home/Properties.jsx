@@ -4,23 +4,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import TransitionLink from "../shared/TransitionLink";
 import { useCursor } from "@/contexts/CursorContext";
+import CustomArrow from '../icons/CustomArrow';
 
-const CustomArrow = ({ className }) => (
-  <svg
-    viewBox="0 0 35 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path
-      d="M0 12H34M34 12C27 12 23 8 23 1M34 12C27 12 23 16 23 23"
-      stroke="currentColor"
-      strokeWidth="1.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 const PROPERTIES_DATA = [
   {
@@ -28,7 +13,7 @@ const PROPERTIES_DATA = [
     title: "Infinite",
     location: "South San Francisco, CA",
     image:
-      "https://images.unsplash.com/photo-1545638165-98565a9634be?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1200",
     aspectRatio: "aspect-4/5",
     column: "left",
     mt: "md:mt-0",

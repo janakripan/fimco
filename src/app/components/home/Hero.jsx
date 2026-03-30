@@ -49,7 +49,7 @@ function WordReveal({ text, className, delay = 0, stroke = false }) {
             className="inline-block"
             style={
               stroke
-                ? { WebkitTextStroke: "2px #0E2A47", color: "transparent" }
+                ? { WebkitTextStroke: "2px #ffffff", color: "transparent" }
                 : {}
             }
             initial={{ y: "110%", opacity: 0 }}
