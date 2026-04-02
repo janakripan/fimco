@@ -1,117 +1,122 @@
 "use client";
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
+import TransitionLink from '../shared/TransitionLink';
+import { useCursor } from "@/contexts/CursorContext";
 
-const MISSION_IMG = "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200";
-const VISION_IMG = "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&q=80&w=1200";
+const WHO_WE_ARE_IMG = "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200";
 
 export default function About() {
+  const { setVariant, setSize, setText } = useCursor();
+
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const textY = useTransform(scrollYProgress, (progress) => {
+    // Math for 175vh height:
+    // H = 175, V = 100, Total Scroll D = 275
+    // Start animation @ 1/6th in view: 175/6 = 29.166. Scrolled P = 29.166 / 275 = 0.106
+    // End animation @ 5/6th in view: 175 * 5/6 = 145.833. Scrolled P = 1 - 0.106 = 0.894
+    const p = Math.min(Math.max(progress, 0.106), 0.894);
+    const vh = 29.166 + ((p - 0.106) / (0.894 - 0.106)) * (145.833 - 29.166);
+    return `calc(${vh}vh - 50%)`;
+  });
+
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+
   return (
-    <div className="w-full bg-white overflow-hidden">
-      {/* section 1: Mission */}
-      <section className="w-full py-24 md:py-32 px-6 md:px-16 lg:px-24">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="flex-1"
-          >
-            <span className="text-accent font-montserrat uppercase tracking-[0.2em] text-sm mb-6 block font-bold">
-              Our Purpose
+    <div className="w-full bg-[#fcfbf9] overflow-hidden">
+      
+      {/* Intro Section */}
+      <section className="w-full py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-white border-b border-primary/5">
+        <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row items-start gap-12 lg:gap-24">
+          <div className="w-full md:w-1/4">
+            <span className="text-accent font-montserrat uppercase tracking-[0.2em] text-sm md:text-base block font-bold">
+              Who We Are
             </span>
-            <h2 className="text-5xl md:text-7xl lg:text-8xl font-montserrat tracking-tight flex flex-row flex-wrap items-center gap-4 leading-[0.85] mb-8">
-              <span className="font-bold text-primary capitalize">Our</span>
-              <span
-                className="capitalize"
-                style={{ WebkitTextStroke: "2px #0E2A47", color: "transparent" }}
-              >
-                Mission
-              </span>
+          </div>
+          <div className="w-full md:w-3/4">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-montserrat font-medium text-primary leading-[1.2] tracking-tight">
+              We specialize in curating Dubai&apos;s finest ultra-luxury properties for a discerning global clientele.
             </h2>
-            <p className="text-lg md:text-xl text-primary/60 font-montserrat leading-relaxed max-w-xl">
-              At Fimco, we empower clients through transparent, data-driven, and personalized real estate solutions. Our mission is to set new benchmarks in the Dubai market, ensuring every investment is a step toward long-term success and residential perfection.
-            </p>
-          </motion.div>
-          
+          </div>
+        </div>
+      </section>
+
+      {/* Advanced Animated Scroll Section */}
+      <section 
+        ref={containerRef}
+        className="w-full h-[175vh] max-h-[2200px] relative flex flex-col md:flex-row bg-[#fcfbf9] px-4 md:px-8 lg:px-12 py-12 gap-8 lg:gap-14 overflow-hidden"
+      >
+        {/* Left Side: Image (60% width) */}
+        <div className="w-full md:w-3/5 h-1/2 md:h-full relative overflow-hidden rounded-sm shadow-xl">
           <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex-1 relative aspect-square md:aspect-4/5 w-full rounded-sm overflow-hidden shadow-2xl"
+            style={{ scale: imageScale }}
+            className="w-full h-full relative"
           >
             <Image 
-              src={MISSION_IMG}
-              alt="Our Mission"
+              src={WHO_WE_ARE_IMG}
+              alt="Dubai Real Estate"
               fill
+              sizes="(max-width: 768px) 100vw, 60vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-primary/5" />
+          </motion.div>
+          <div className="absolute inset-0 bg-primary/5 pointer-events-none" />
+        </div>
+
+        {/* Right Side: Animated Text Track (40% width) */}
+        <div className="w-full md:w-2/5 h-1/2 md:h-full relative block">
+          <motion.div 
+            style={{ y: textY }}
+            className="absolute top-0 w-full left-0 right-0 flex flex-col justify-center lg:pr-12"
+          >
+             <h3 className="text-3xl md:text-4xl lg:text-5xl font-montserrat font-bold text-primary mb-6 leading-[1.15] tracking-tight">
+               Uncompromising <br/> Excellence.
+             </h3>
+             <p className="text-base md:text-lg text-primary/60 font-montserrat leading-relaxed max-w-sm md:max-w-md mb-10">
+               From the iconic Palm Jumeirah to the ultra-modern skyline of Downtown Dubai, we provide unparalleled access to the most exclusive off-market listings. Discretion, expertise, and a visionary approach to investment define our legacy.
+             </p>
+             <TransitionLink href="/about" className="inline-block w-fit">
+               <motion.button 
+                 onMouseEnter={() => {
+                   setVariant("link");
+                   setSize(60);
+                   setText("");
+                 }}
+                 onMouseLeave={() => {
+                   setVariant("default");
+                   setSize(24);
+                   setText("");
+                 }}
+                 className="group relative px-8 md:px-10 py-4 md:py-5 border border-primary/20 text-primary font-montserrat text-[10px] md:text-[11px] uppercase tracking-[0.2em] font-bold overflow-hidden shadow-sm rounded-full transition-colors duration-300"
+               >
+                 <span className="relative z-10 transition-colors duration-500 group-hover:text-white">
+                   Read Our Story
+                 </span>
+                 <div className="absolute inset-0 w-full h-full bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]" />
+               </motion.button>
+             </TransitionLink>
           </motion.div>
         </div>
       </section>
 
-      {/* section 2: Vision (Mirrored) */}
-      <section className="w-full py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-gray-50/30">
-        <div className="max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center gap-12 lg:gap-24">
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex-1 relative aspect-square md:aspect-4/5 w-full rounded-sm overflow-hidden shadow-2xl"
-          >
-            <Image 
-              src={VISION_IMG}
-              alt="Our Vision"
-              fill
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-primary/5" />
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="flex-1"
-          >
-            <span className="text-accent font-montserrat uppercase tracking-[0.2em] text-sm mb-6 block font-bold">
-              Our Aspiration
-            </span>
-            <h2 className="text-5xl md:text-7xl lg:text-8xl font-montserrat tracking-tight flex flex-row flex-wrap items-center gap-4 leading-[0.85] mb-8">
-              <span className="font-bold text-primary capitalize">Our</span>
-              <span
-                className="capitalize"
-                style={{ WebkitTextStroke: "2px #0E2A47", color: "transparent" }}
-              >
-                Vision
-              </span>
-            </h2>
-            <p className="text-lg md:text-xl text-primary/60 font-montserrat leading-relaxed max-w-xl">
-              We envision becoming Dubai&apos;s most trusted partner in real estate excellence. Our goal is to redefine luxury living and smart investing through innovation, uncompromising integrity, and a global perspective on local expertise.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* section 3: CTA / Brochure Section */}
-      <section className="w-full py-24 md:py-40 px-6 md:px-16 lg:px-24 bg-white relative overflow-hidden">
-        {/* Decorative Background Elements */}
+      {/* section 2: CTA / Brochure Section */}
+      <section className="w-full py-24 md:py-40 px-6 md:px-16 lg:px-24 bg-white relative overflow-hidden border-t border-primary/5">
         <div className="absolute top-0 right-0 w-1/3 h-full bg-primary/2 -z-1" />
         
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-32">
+        <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-32">
           {/* Brochure Mockup Side */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
             whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.33, 1, 0.68, 1] }}
-            className="flex-1 relative w-full aspect-4/3 max-w-[600px]"
+            className="flex-1 relative w-full aspect-[4/3] max-w-[600px]"
           >
             {/* Mockup Card 1 */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[85%] bg-blue-100/50 rounded-xl -rotate-12 shadow-lg z-0" />
@@ -146,22 +151,46 @@ export default function About() {
             transition={{ duration: 0.8 }}
             className="flex-1 text-center lg:text-left"
           >
-            <span className="text-primary/40 font-montserrat uppercase tracking-[0.3em] text-sm mb-6 block font-bold">
+            <span className="text-primary/40 font-montserrat uppercase tracking-[0.3em] text-[10px] md:text-xs mb-6 block font-bold">
               Company Brochure
             </span>
-            <h2 className="text-4xl md:text-6xl font-montserrat font-bold text-primary mb-8 leading-[1.1]">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-montserrat font-bold text-primary mb-8 leading-[1.1]">
               Trusted Expertise, <br />
               Proven Success
             </h2>
-            <p className="text-lg md:text-xl text-primary/60 font-montserrat leading-relaxed mb-12 max-w-2xl mx-auto lg:mx-0">
+            <p className="text-base md:text-lg text-primary/60 font-montserrat leading-relaxed mb-12 max-w-xl mx-auto lg:mx-0">
               Explore our story and achievements in Dubai&apos;s property market, from award-winning success to client partnerships. Our brochure showcases how we guide buyers, sellers, and investors with trust, expertise, and confidence.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-              <button className="bg-accent text-white px-10 py-5 rounded-full font-montserrat font-bold text-sm uppercase tracking-widest hover:bg-secondary transition-colors duration-300 w-full sm:w-auto shadow-lg">
+              <button 
+                onMouseEnter={() => {
+                  setVariant("link");
+                  setSize(60);
+                  setText("");
+                }}
+                onMouseLeave={() => {
+                  setVariant("default");
+                  setSize(24);
+                  setText("");
+                }}
+                className="bg-accent text-white px-10 py-5 rounded-full font-montserrat font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-secondary transition-colors duration-300 w-full sm:w-auto shadow-lg"
+              >
                 View Brochure
               </button>
-              <button className="border border-accent/20 text-accent px-10 py-5 rounded-full font-montserrat font-bold text-sm uppercase tracking-widest hover:bg-accent/5 transition-colors duration-300 w-full sm:w-auto">
+              <button 
+                onMouseEnter={() => {
+                  setVariant("link");
+                  setSize(60);
+                  setText("");
+                }}
+                onMouseLeave={() => {
+                  setVariant("default");
+                  setSize(24);
+                  setText("");
+                }}
+                className="border border-accent/20 text-accent px-10 py-5 rounded-full font-montserrat font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-accent/5 transition-colors duration-300 w-full sm:w-auto"
+              >
                 Download PDF
               </button>
             </div>
@@ -169,8 +198,8 @@ export default function About() {
         </div>
       </section>
 
-      {/* section 4: Logo Carousel */}
-      <section className="w-full py-20 border-t border-primary/5 bg-white overflow-hidden">
+      {/* section 3: Logo Carousel */}
+      <section className="w-full py-16 md:py-20 border-t border-primary/5 bg-white overflow-hidden">
         <div className="relative flex overflow-hidden">
           <motion.div 
             animate={{ x: ["0%", "-50%"] }}
@@ -183,15 +212,10 @@ export default function About() {
           >
             {[...logos, ...logos].map((logo, index) => (
               <div 
-                key={index} 
-                className="relative h-12 w-32 md:h-12 md:w-48 grayscale hover:grayscale-0 transition-all duration-500 opacity-30 hover:opacity-100 shrink-0"
+                key={`${logo.name}-${index}`} 
+                className="relative h-12 w-36 md:h-16 md:w-48 transition-transform duration-500 hover:scale-105 shrink-0 cursor-pointer flex items-center justify-center"
               >
-                <Image 
-                  src={logo.url}
-                  alt={logo.name}
-                  fill
-                  className="object-contain"
-                />
+                {logo.svg}
               </div>
             ))}
           </motion.div>
@@ -202,10 +226,49 @@ export default function About() {
 }
 
 const logos = [
-  { name: "Forbes", url: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=400" },
-  { name: "Bloomberg", url: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=400" },
-  { name: "Fortune", url: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&q=80&w=400" },
-  { name: "Reuters", url: "https://images.unsplash.com/photo-1611162618071-b39a2dd0d7ef?auto=format&fit=crop&q=80&w=400" },
-  { name: "The Economist", url: "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=400" },
-  { name: "CNBC", url: "https://images.unsplash.com/photo-1611162616475-46b635cbca85?auto=format&fit=crop&q=80&w=400" },
+  { 
+    name: "Forbes", 
+    svg: <svg viewBox="0 0 200 60" className="w-full h-full"><text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fontFamily="Georgia, serif" fontSize="48" fontWeight="bold" fill="#0E2A47">Forbes</text></svg> 
+  },
+  { 
+    name: "Bloomberg", 
+    svg: <svg viewBox="0 0 260 60" className="w-full h-full"><text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fontFamily="Arial, Helvetica, sans-serif" fontSize="42" fontWeight="900" fill="#0E2A47" letterSpacing="-1">Bloomberg</text></svg> 
+  },
+  { 
+    name: "Fortune", 
+    svg: <svg viewBox="0 0 240 60" className="w-full h-full"><text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fontFamily="'Times New Roman', Times, serif" fontSize="40" fontWeight="900" fill="#0E2A47" letterSpacing="2">FORTUNE</text></svg> 
+  },
+  { 
+    name: "Reuters", 
+    svg: (
+      <svg viewBox="0 0 260 60" className="w-full h-full">
+        <g transform="translate(30, 15)">
+          <circle cx="15" cy="15" r="15" fill="#f37021" />
+          <circle cx="15" cy="15" r="8" fill="#fff" />
+        </g>
+        <text x="75" y="50%" dominantBaseline="middle" fontFamily="Arial, sans-serif" fontSize="36" fontWeight="bold" fill="#0E2A47" letterSpacing="1">REUTERS</text>
+      </svg>
+    ) 
+  },
+  { 
+    name: "The Economist", 
+    svg: (
+      <svg viewBox="0 0 260 60" className="w-full h-full">
+        <rect x="25" y="10" width="210" height="40" fill="#E3120B" />
+        <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fontFamily="Georgia, serif" fontSize="24" fontWeight="bold" fill="#ffffff" letterSpacing="1">The Economist</text>
+      </svg>
+    ) 
+  },
+  { 
+    name: "CNBC", 
+    svg: (
+      <svg viewBox="0 0 200 60" className="w-full h-full">
+         <text x="45%" y="50%" textAnchor="middle" dominantBaseline="middle" fontFamily="Arial, sans-serif" fontSize="44" fontWeight="900" fill="#0E2A47" letterSpacing="-1">CNBC</text>
+         {/* Minimal peacock reference */}
+         <circle cx="155" cy="15" r="5" fill="#166fa8" />
+         <circle cx="167" cy="15" r="5" fill="#d72c1e" />
+         <circle cx="179" cy="15" r="5" fill="#e89e1b" />
+      </svg>
+    ) 
+  },
 ];

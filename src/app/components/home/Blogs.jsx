@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
-import { motion, useAnimation, useMotionValue } from "framer-motion";
+import React, { useRef, useEffect, useState } from "react";
+import Image from "next/image";
+import { motion, useAnimation, useMotionValue, useAnimationFrame } from "framer-motion";
 import TransitionLink from "../shared/TransitionLink";
 import { useCursor } from "@/contexts/CursorContext";
 import CustomArrow from "../icons/CustomArrow";
@@ -56,6 +57,9 @@ export default function Blogs() {
   const controls = useAnimation();
   const x = useMotionValue(0);
   const { setVariant, setSize, setText } = useCursor();
+  
+  const [isHovered, setIsHovered] = useState(false);
+  const isDragging = useRef(false);
 
   // 🔥 duplicate (required for infinite illusion)
   const loopData = [...BLOGS_DATA, ...BLOGS_DATA];
@@ -81,6 +85,14 @@ export default function Blogs() {
 
     return () => unsubscribe();
   }, [x]);
+
+  // 🔥 Auto Scroll (Slow infinite scroll)
+  useAnimationFrame((time, delta) => {
+    if (isHovered || isDragging.current) return;
+    // approx 0.8px per frame for a very slow, smooth drift
+    const moveBy = -1 * (delta / 16) * 0.8; 
+    x.set(x.get() + moveBy);
+  });
 
   // 👉 Button controls
   const handleNext = async () => {
@@ -139,13 +151,19 @@ export default function Blogs() {
       </div>
 
       {/* Carousel */}
-      <div className="relative flex-1">
+      <div 
+        className="relative flex-1"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <motion.div
           ref={containerRef}
           animate={controls}
           drag="x"
           dragElastic={0.1}
           style={{ x }}
+          onDragStart={() => { isDragging.current = true; }}
+          onDragEnd={() => { isDragging.current = false; }}
           className="flex gap-16 cursor-grab active:cursor-grabbing"
         >
           {loopData.map((blog, index) => (
@@ -164,11 +182,12 @@ export default function Blogs() {
               }}
             >
               <div className="relative aspect-16/11 overflow-hidden mb-8 bg-gray-50 border border-gray-100">
-                <img
+                <Image
                   src={blog.image}
                   alt={blog.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-110"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 500px"
+                  className="object-cover transition-all duration-1000 ease-out group-hover:scale-110"
                 />
 
                 {/* Blurred Overlay - Fades out on hover */}
