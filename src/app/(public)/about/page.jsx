@@ -1,8 +1,18 @@
+import AboutHero from "../../components/about/AboutHero";
+import AboutTeam from "../../components/about/AboutTeam";
+import HomeAbout from "../../components/home/About";
+
+export const metadata = {
+  title: "About Us | Fimco Real Estate",
+  description: "Learn about Fimco Real Estate's mission, vision, and leadership in the Dubai property market.",
+};
+
 export default function AboutPage() {
   return (
-    <div className="min-h-screen p-10">
-      <h1 className="text-3xl font-bold">About</h1>
-    </div>
+    <>
+      <AboutHero />
+      <HomeAbout />
+      <AboutTeam />
+    </>
   );
 }
-

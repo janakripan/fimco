@@ -1,8 +1,23 @@
+import PropertyHero from "../../components/property/PropertyHero";
+import GlobalReach from "../../components/property/GlobalReach";
+import PropertySearchSort from "../../components/property/PropertySearchSort";
+import PropertyListView from "../../components/property/PropertyListView";
+import ListPropertyCTA from "../../components/contact/ListPropertyCTA";
+
+
+export const metadata = {
+  title: "Properties | Fimco Real Estate",
+  description: "Explore our exclusive portfolio of luxury real estate directly curated by Fimco advisors.",
+};
+
 export default function PropertyPage() {
   return (
-    <div className="min-h-screen p-10">
-      <h1 className="text-3xl font-bold">Properties</h1>
-    </div>
+    <>
+      <PropertyHero />
+      <PropertySearchSort />
+      <PropertyListView />
+      <ListPropertyCTA />
+      <GlobalReach />
+    </>
   );
 }
-

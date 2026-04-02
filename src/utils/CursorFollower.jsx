@@ -9,7 +9,7 @@ export default function CursorFollower() {
   const mouse = useRef({ x: 0, y: 0 });
   const current = useRef({ x: 0, y: 0 });
 
-  const { variant, text, size } = useCursor();
+  const { variant, setVariant, text, setText, size, setSize } = useCursor();
 
   useEffect(() => {
     const el = ref.current;
@@ -46,23 +46,48 @@ export default function CursorFollower() {
       rafId = requestAnimationFrame(animate);
     };
 
-    const handleMouseOut = (e) => {
+    const handleMouseOutDocument = (e) => {
       if (!e.relatedTarget && !e.toElement) {
         if (el) el.style.opacity = "0";
       }
     };
 
+    // Global a/button hover listener
+    const handleMouseOver = (e) => {
+      const target = e.target.closest("a, button, [role='button']");
+      const related = e.relatedTarget?.closest?.("a, button, [role='button']");
+      if (target && target !== related) {
+        setVariant("link");
+        setSize(60);
+      }
+    };
+
+    const handleGlobalMouseOut = (e) => {
+      const target = e.target.closest("a, button, [role='button']");
+      const related = e.relatedTarget?.closest?.("a, button, [role='button']");
+      if (target && target !== related) {
+        // Fallback to default
+        setVariant("default");
+        setSize(24);
+        setText("");
+      }
+    };
+
     document.addEventListener("mousemove", move);
-    document.addEventListener("mouseout", handleMouseOut);
+    document.addEventListener("mouseout", handleMouseOutDocument);
+    document.addEventListener("mouseover", handleMouseOver, { capture: true });
+    document.addEventListener("mouseout", handleGlobalMouseOut, { capture: true });
 
     rafId = requestAnimationFrame(animate);
 
     return () => {
       document.removeEventListener("mousemove", move);
-      document.removeEventListener("mouseout", handleMouseOut);
+      document.removeEventListener("mouseout", handleMouseOutDocument);
+      document.removeEventListener("mouseover", handleMouseOver, { capture: true });
+      document.removeEventListener("mouseout", handleGlobalMouseOut, { capture: true });
       cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [setVariant, setSize, setText]);
 
   const styles = {
     default: {

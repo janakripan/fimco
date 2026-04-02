@@ -222,16 +222,12 @@ export default function Contact() {
                   className="group w-fit flex items-center gap-0 cursor-pointer"
                 >
                   {/* Pill button */}
-                  <motion.div
-                    variants={{
-                      hover: { paddingRight: "2.5rem", paddingLeft: "2.5rem" },
-                    }}
-                    transition={{ duration: 0.35, ease: [0.33, 1, 0.68, 1] }}
+                  <div
                     className="flex items-center gap-4 px-10 py-5 bg-accent text-primary font-montserrat text-[11px] uppercase tracking-[0.3em] font-bold rounded-full shadow-[0_10px_40px_rgba(212,175,106,0.25)] group-hover:shadow-[0_10px_60px_rgba(212,175,106,0.45)] transition-shadow duration-400"
                   >
                     Book a Free Consultation
                     <CustomArrow className="w-6 h-auto transition-transform duration-300 group-hover:translate-x-1" />
-                  </motion.div>
+                  </div>
                 </motion.div>
               </TransitionLink>
             </motion.div>
