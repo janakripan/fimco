@@ -77,7 +77,7 @@ export default function Footer() {
             {/* Logo */}
             <TransitionLink
               href="/"
-              className="text-2xl font-bold text-white tracking-tighter flex items-center gap-1 group w-fit"
+              className="text-3xl md:text-4xl font-bold text-white tracking-tighter flex items-center gap-1 group w-fit"
             >
               FIMCO
               <span className="text-accent group-hover:scale-125 transition-transform duration-300">.</span>

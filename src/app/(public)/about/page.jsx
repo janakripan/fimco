@@ -1,6 +1,8 @@
 import AboutHero from "../../components/about/AboutHero";
 import AboutTeam from "../../components/about/AboutTeam";
-import HomeAbout from "../../components/home/About";
+import AboutPhilosophy from "../../components/about/AboutPhilosophy";
+import AboutMission from "../../components/about/AboutMission";
+import AboutStats from "../../components/about/AboutStats";
 
 export const metadata = {
   title: "About Us | Fimco Real Estate",
@@ -11,7 +13,9 @@ export default function AboutPage() {
   return (
     <>
       <AboutHero />
-      <HomeAbout />
+      <AboutPhilosophy />
+      <AboutStats />
+      <AboutMission />
       <AboutTeam />
     </>
   );

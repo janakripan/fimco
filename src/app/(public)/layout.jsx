@@ -1,8 +1,5 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
-
 import CursorFollower from "@/utils/CursorFollower";
 import Footer from "../components/shared/Footer";
 import Header from "../components/shared/Header";
@@ -11,7 +8,6 @@ import SmoothScroll from "@/utils/SmoothScroll";
 import { TransitionProvider, useTransition } from "@/contexts/TransitionContext";
 
 function LayoutContent({ children }) {
-  const pathname = usePathname();
   const { isTransitioning } = useTransition();
 
   return (
@@ -24,18 +20,7 @@ function LayoutContent({ children }) {
 
         <Header />
 
-        {/* 🔥 PAGE CONTENT ANIMATION */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={pathname}
-            initial={{ y: 40, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -20, opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
+        {children}
 
         <Footer />
       </main>

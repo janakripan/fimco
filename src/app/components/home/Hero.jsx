@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import TransitionLink from "../shared/TransitionLink";
 
 /* ─── Marquee ticker ─────────────────────────────────────────── */
@@ -68,8 +68,28 @@ function WordReveal({ text, className, delay = 0, stroke = false }) {
   );
 }
 
-/* ─── Stat pill ───────────────────────────────────────────────── */
+/* ─── Stat pill with Count-up ──────────────────────────────────── */
 function Stat({ value, label, delay }) {
+  const numericValue = parseInt(value, 10);
+  // Separate the suffix (e.g., "M+", "+", "%")
+  const suffix = value.replace(numericValue.toString(), "");
+  
+  const springValue = useSpring(0, {
+    stiffness: 25,
+    damping: 10,
+  });
+
+  const displayValue = useTransform(springValue, (current) => 
+    Math.round(current).toString() + suffix
+  );
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      springValue.set(numericValue);
+    }, delay * 1000 + 400); // 400ms offset to let initial fade-in start first
+    return () => clearTimeout(timer);
+  }, [numericValue, springValue, delay]);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -77,9 +97,9 @@ function Stat({ value, label, delay }) {
       transition={{ duration: 0.7, ease: "easeOut", delay }}
       className="flex flex-col gap-1"
     >
-      <span className="text-white font-oswald text-3xl md:text-4xl font-bold leading-none tracking-tight">
-        {value}
-      </span>
+      <motion.span className="text-white font-oswald text-3xl md:text-4xl font-bold leading-none tracking-tight">
+        {displayValue}
+      </motion.span>
       <span className="text-white/40 font-montserrat text-[9px] uppercase tracking-[0.25em]">
         {label}
       </span>
@@ -173,7 +193,7 @@ export default function Hero() {
       {/* ── Main content ── */}
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
-        className="relative z-10 flex-1 flex flex-col justify-between px-6 md:px-16 lg:px-24 pt-28 pb-0"
+        className="relative z-10 flex-1 flex flex-col justify-between px-6 md:px-16 lg:px-24 pt-16 md:pt-24 pb-6 md:pb-0"
       >
         {/* Top eyebrow */}
         {ready && (
@@ -184,54 +204,57 @@ export default function Hero() {
             className="flex items-center gap-4"
           >
             <div className="w-6 h-px bg-accent" />
-            <span className="text-accent font-montserrat text-[9px] uppercase tracking-[0.45em] font-bold">
+            <span className="text-accent font-montserrat text-[10px] uppercase tracking-[0.45em] font-bold">
               Dubai Luxury Real Estate
             </span>
           </motion.div>
         )}
 
         {/* Headline */}
-        <div className="flex flex-col gap-0 mt-auto mb-auto pt-8">
+        <div className="flex flex-col gap-0 mt-auto mb-auto pt-4 md:pt-6">
           {ready && (
             <>
               {/* Line 1 — solid */}
               <h1 className="font-montserrat font-bold text-white capitalize leading-[0.88] tracking-tight">
-                <WordReveal
-                  text="Where"
-                  className="text-[13vw] md:text-[9vw] lg:text-[8vw] block"
-                  delay={0.4}
-                />
-                {/* Line 2 — split solid + stroke */}
+                {/* Line 1 — Where (solid) + Vision (stroke) */}
                 <span className="flex flex-row flex-wrap items-end gap-x-4 leading-[0.88]">
+                  <WordReveal
+                    text="Where"
+                    className="text-[13vw] md:text-[9vw] lg:text-[8vw]"
+                    delay={0.4}
+                  />
                   <WordReveal
                     text="Vision"
                     className="text-[13vw] md:text-[9vw] lg:text-[8vw]"
+                    stroke
                     delay={0.55}
                   />
+                </span>
+                
+                {/* Line 2 — Meets (solid) + Value (stroke) */}
+                <span className="flex flex-row flex-wrap items-end gap-x-4 leading-[0.88] mt-1 md:mt-0">
                   <WordReveal
                     text="Meets"
                     className="text-[13vw] md:text-[9vw] lg:text-[8vw]"
-                    stroke
                     delay={0.7}
                   />
-                </span>
-                {/* Line 3 — large stroke word + small */}
-                <span className="flex flex-row flex-wrap items-end gap-x-4 leading-[0.88]">
                   <WordReveal
                     text="Value"
                     className="text-[13vw] md:text-[9vw] lg:text-[8vw]"
                     stroke
                     delay={0.85}
                   />
-                  <motion.span
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.1, duration: 0.7, ease: "easeOut" }}
-                    className="text-2xl md:text-3xl font-montserrat font-medium text-white/50 mb-3 tracking-normal"
-                  >
-                    — in Dubai
-                  </motion.span>
                 </span>
+
+                {/* Line 3 — — in Dubai (solid) */}
+                <motion.span
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.1, duration: 0.7, ease: "easeOut" }}
+                  className="text-2xl md:text-3xl font-montserrat font-medium text-white/50 block mt-4 md:mt-2 tracking-normal"
+                >
+                  — in Dubai
+                </motion.span>
               </h1>
 
               {/* Sub-copy */}
@@ -239,7 +262,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.3, duration: 0.7, ease: "easeOut" }}
-                className="mt-8 text-white/45 font-montserrat text-sm md:text-base leading-relaxed max-w-md"
+                className="mt-4 md:mt-6 text-white/45 font-montserrat text-sm md:text-base leading-relaxed max-w-md"
               >
                 Premium property management, strategic investment advisory, and
                 exclusive access to Dubai&apos;s most prestigious developments.
@@ -250,7 +273,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.55, duration: 0.7, ease: "easeOut" }}
-                className="mt-10 flex flex-wrap items-center gap-6"
+                className="mt-6 md:mt-8 flex flex-wrap items-center gap-6"
               >
                 <TransitionLink href="/property">
                   <motion.div
@@ -290,7 +313,7 @@ export default function Hero() {
         </div>
 
         {/* ── Bottom: ticker + stats ── */}
-        <div className="mt-12 flex flex-col gap-0">
+        <div className="mt-8 md:mt-10 flex flex-col gap-0">
           {/* Stats row */}
           {ready && (
             <div className="flex flex-row flex-wrap items-end justify-between gap-6 pb-8 border-b border-white/10">

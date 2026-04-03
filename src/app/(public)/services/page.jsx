@@ -1,6 +1,7 @@
 import ServicesHero from "../../components/services/ServicesHero";
-import HomeServices from "../../components/home/Services";
+import ServiceDetailedList from "../../components/services/ServiceDetailedList";
 import ServicesProcess from "../../components/services/ServicesProcess";
+import ServicesCTA from "../../components/services/ServicesCTA";
 
 export const metadata = {
   title: "Services | Fimco Real Estate",
@@ -11,8 +12,9 @@ export default function ServicesPage() {
   return (
     <>
       <ServicesHero />
-      <HomeServices />
+      <ServiceDetailedList />
       <ServicesProcess />
+      <ServicesCTA />
     </>
   );
 }

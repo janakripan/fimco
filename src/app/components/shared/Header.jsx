@@ -73,7 +73,7 @@ export default function Header() {
       <div className={`max-w-screen-2xl mx-auto px-12 h-12 flex items-center justify-between transition-all duration-500 pointer-events-auto`}>
         
         {/* Logo */}
-        <TransitionLink href="/" className="text-xl font-bold text-primary tracking-tighter flex items-center gap-1 group">
+        <TransitionLink href="/" className="text-2xl md:text-3xl font-bold text-primary tracking-tighter flex items-center gap-1 group">
           FIMCO<span className="text-accent group-hover:scale-125 transition-transform duration-300">.</span>
         </TransitionLink>
 
@@ -167,7 +167,7 @@ function NavLink({ href, label, highlight }) {
       href={href}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`text-[9px] uppercase tracking-[0.3em] font-bold transition-all duration-300 relative inline-block overflow-hidden py-1 leading-none text-primary`}
+      className={`text-[10px] uppercase tracking-[0.3em] font-bold transition-all duration-300 relative inline-block overflow-hidden py-1 leading-none text-primary`}
     >
       <span className="relative z-10">{label}</span>
       <span 
