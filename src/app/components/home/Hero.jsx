@@ -147,7 +147,7 @@ export default function Hero() {
   // Parallax layers
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.6], [0.55, 0.75]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   return (
@@ -193,7 +193,7 @@ export default function Hero() {
       {/* ── Main content ── */}
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
-        className="relative z-10 flex-1 flex flex-col justify-between px-6 md:px-16 lg:px-24 pt-16 md:pt-24 pb-6 md:pb-0"
+        className="relative z-10 flex-1 flex flex-col justify-between px-6 md:px-16 lg:px-24 pt-12 md:pt-16 pb-4 md:pb-8"
       >
         {/* Top eyebrow */}
         {ready && (
@@ -211,7 +211,7 @@ export default function Hero() {
         )}
 
         {/* Headline */}
-        <div className="flex flex-col gap-0 mt-auto mb-auto pt-4 md:pt-6">
+        <div className="flex flex-col gap-0 mt-auto pt-4 md:pt-6">
           {ready && (
             <>
               {/* Line 1 — solid */}
@@ -262,7 +262,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.3, duration: 0.7, ease: "easeOut" }}
-                className="mt-4 md:mt-6 text-white/45 font-montserrat text-sm md:text-base leading-relaxed max-w-md"
+                className="mt-3 md:mt-4 text-white/45 font-montserrat text-sm md:text-base leading-relaxed max-w-md"
               >
                 Premium property management, strategic investment advisory, and
                 exclusive access to Dubai&apos;s most prestigious developments.
@@ -273,7 +273,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.55, duration: 0.7, ease: "easeOut" }}
-                className="mt-6 md:mt-8 flex flex-wrap items-center gap-6"
+                className="mt-4 md:mt-6 flex flex-wrap items-center gap-6"
               >
                 <TransitionLink href="/property">
                   <motion.div
@@ -313,7 +313,7 @@ export default function Hero() {
         </div>
 
         {/* ── Bottom: ticker + stats ── */}
-        <div className="mt-8 md:mt-10 flex flex-col gap-0">
+        <div className="mt-12 md:mt-0 flex flex-col gap-0">
           {/* Stats row */}
           {ready && (
             <div className="flex flex-row flex-wrap items-end justify-between gap-6 pb-8 border-b border-white/10">

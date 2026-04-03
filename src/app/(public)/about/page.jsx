@@ -5,8 +5,11 @@ import AboutMission from "../../components/about/AboutMission";
 import AboutStats from "../../components/about/AboutStats";
 
 export const metadata = {
-  title: "About Us | Fimco Real Estate",
-  description: "Learn about Fimco Real Estate's mission, vision, and leadership in the Dubai property market.",
+  title: "About Fimco | Our Mission & Vision for Dubai Real Estate",
+  description: "Learn about Fimco Real Estate's elite mission, vision, and leadership. We provide architectural-level precision in property management and investment advisory across Dubai.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {

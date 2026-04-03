@@ -178,7 +178,7 @@ export default function BlogGrid() {
         {/* Unified Masonry Grid */}
         <div className="columns-1 md:columns-2 lg:columns-3 gap-10 space-y-10">
           {BLOGS_DATA.map((blog, idx) => (
-             <motion.div
+             <motion.article
              key={blog.id}
              initial={{ opacity: 0, y: 40 }}
              whileInView={{ opacity: 1, y: 0 }}
@@ -224,7 +224,7 @@ export default function BlogGrid() {
                  <span className="text-[10px] font-montserrat uppercase tracking-[0.2em] font-bold text-primary/60">{blog.readTime}</span>
                </div>
              </div>
-           </motion.div>
+           </motion.article>
           ))}
         </div>
 

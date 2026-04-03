@@ -4,8 +4,11 @@ import BlogGrid from "../../components/blogs/BlogGrid";
 import BlogNewsletter from "../../components/blogs/BlogNewsletter";
 
 export const metadata = {
-  title: "Blogs & Insights | Fimco Real Estate",
-  description: "Read our latest insights, market analyses, and news on Dubai real estate.",
+  title: "Dubai Real Estate Insights | Market Trends & Expert Analysis",
+  description: "Read Fimco Real Estate's latest insights, architectural analyses, and market trends in Dubai's high-end property sector.",
+  alternates: {
+    canonical: "/blogs",
+  },
 };
 
 export default function BlogsPage() {

@@ -4,7 +4,7 @@ import CursorFollower from "@/utils/CursorFollower";
 import Footer from "../components/shared/Footer";
 import Header from "../components/shared/Header";
 import PageTransition from "@/utils/PageTransition";
-import SmoothScroll from "@/utils/SmoothScroll";
+import SmoothScroll from "../../utils/SmoothScroll";
 import { TransitionProvider, useTransition } from "@/contexts/TransitionContext";
 
 function LayoutContent({ children }) {

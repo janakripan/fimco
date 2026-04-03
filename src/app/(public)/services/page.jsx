@@ -4,8 +4,11 @@ import ServicesProcess from "../../components/services/ServicesProcess";
 import ServicesCTA from "../../components/services/ServicesCTA";
 
 export const metadata = {
-  title: "Services | Fimco Real Estate",
-  description: "Comprehensive luxury real estate services in Dubai.",
+  title: "Expert Services | Property Management & Investment Advisory",
+  description: "Explore Fimco's bespoke real estate services, from white-glove property management to strategic off-plan investment advisory in Dubai's premier developments.",
+  alternates: {
+    canonical: "/services",
+  },
 };
 
 export default function ServicesPage() {

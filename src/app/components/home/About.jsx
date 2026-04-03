@@ -176,7 +176,7 @@ export default function About() {
                 }}
                 className="bg-accent text-white px-10 py-5 rounded-full font-montserrat font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-secondary transition-colors duration-300 w-full sm:w-auto shadow-lg"
               >
-                View Brochure
+                View Detailed Brochure
               </button>
               <button 
                 onMouseEnter={() => {
@@ -191,7 +191,7 @@ export default function About() {
                 }}
                 className="border border-accent/20 text-accent px-10 py-5 rounded-full font-montserrat font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-accent/5 transition-colors duration-300 w-full sm:w-auto"
               >
-                Download PDF
+                Download Investment Portfolio
               </button>
             </div>
           </motion.div>

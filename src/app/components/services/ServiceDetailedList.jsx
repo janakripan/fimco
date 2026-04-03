@@ -76,8 +76,9 @@ export default function ServiceDetailedList() {
   return (
     <div className="w-full">
       {serviceDetails.map((service, index) => (
-        <section 
+        <article 
           key={service.id} 
+          id={service.title.toLowerCase().replace(/\s+/g, '-')}
           className={`w-full py-24 md:py-40 px-6 md:px-16 lg:px-24 ${service.bg} border-b border-primary/5`}
         >
           <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
@@ -141,7 +142,7 @@ export default function ServiceDetailedList() {
             </div>
 
           </div>
-        </section>
+        </article>
       ))}
     </div>
   );

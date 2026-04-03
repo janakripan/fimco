@@ -45,7 +45,7 @@ export default function BlogFeatured() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           
           {/* Main Feature */}
-          <motion.div 
+          <motion.article 
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -71,7 +71,7 @@ export default function BlogFeatured() {
             <p className="text-lg text-primary/60 font-montserrat leading-relaxed max-w-2xl">
                {FEATURED_POSTS[0].desc}
             </p>
-          </motion.div>
+          </motion.article>
 
           {/* Secondary Highlights Column */}
           <motion.div 
@@ -82,7 +82,7 @@ export default function BlogFeatured() {
             className="lg:col-span-4 flex flex-col gap-12"
           >
              {FEATURED_POSTS.slice(1, 3).map((blog, fIdx) => (
-               <div 
+               <article 
                  key={blog.id}
                  className={`group cursor-pointer ${fIdx === 0 ? 'pb-12 border-b border-primary/10' : ''}`}
                  onMouseEnter={() => { setVariant("button"); setSize(100); setText("VIEW"); }}
@@ -100,7 +100,7 @@ export default function BlogFeatured() {
                   <h3 className="text-xl font-montserrat font-bold text-primary leading-tight group-hover:text-accent transition-colors duration-300">
                     {blog.title}
                   </h3>
-               </div>
+               </article>
              ))}
           </motion.div>
 
