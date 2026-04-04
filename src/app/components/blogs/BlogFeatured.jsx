@@ -3,33 +3,10 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useCursor } from "@/contexts/CursorContext";
+import { FEATURED_POSTS } from "../../../constants/blogData";
+import Link from "next/link";
 
-const FEATURED_POSTS = [
-  {
-    id: 1,
-    title: "Discovery Station | Where groundbreaking Life Science intersects with Everyday Life",
-    date: "Jan 21, 2025",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1000",
-    category: "Architecture",
-    desc: "A deep dive into the fusion of biotechnology and urban design within Dubai's newest innovation districts."
-  },
-  {
-    id: 2,
-    title: "Neighborhood Approach: Casitas is an innovative work campus",
-    date: "Jan 15, 2025",
-    image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&q=80&w=1000",
-    category: "Commercial",
-    desc: "Refining the corporate landscape."
-  },
-  {
-    id: 3,
-    title: "The Heart of the City: Downtown Dubai's development boom",
-    date: "Sep 05, 2025",
-    image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=1000",
-    category: "Urbanism",
-    desc: "Vertical evolution of the world's most iconic skyline."
-  }
-];
+
 
 export default function BlogFeatured() {
   const { setVariant, setSize, setText } = useCursor();
@@ -54,6 +31,7 @@ export default function BlogFeatured() {
             onMouseEnter={() => { setVariant("button"); setSize(120); setText("STORY"); }}
             onMouseLeave={() => { setVariant("default"); setSize(24); setText(""); }}
           >
+            <Link href={`/blogs/${FEATURED_POSTS[0].slug}`}>
             <div className="relative aspect-video lg:aspect-video overflow-hidden rounded-sm mb-8 shadow-sm">
               <Image 
                 src={FEATURED_POSTS[0].image}
@@ -71,6 +49,7 @@ export default function BlogFeatured() {
             <p className="text-lg text-primary/60 font-montserrat leading-relaxed max-w-2xl">
                {FEATURED_POSTS[0].desc}
             </p>
+            </Link>
           </motion.article>
 
           {/* Secondary Highlights Column */}
@@ -88,6 +67,7 @@ export default function BlogFeatured() {
                  onMouseEnter={() => { setVariant("button"); setSize(100); setText("VIEW"); }}
                  onMouseLeave={() => { setVariant("default"); setSize(24); setText(""); }}
                >
+                  <Link href={`/blogs/${blog.slug}`}>
                   <div className="relative aspect-video lg:aspect-4/3 overflow-hidden rounded-sm mb-6">
                     <Image 
                       src={blog.image}
@@ -100,6 +80,7 @@ export default function BlogFeatured() {
                   <h3 className="text-xl font-montserrat font-bold text-primary leading-tight group-hover:text-accent transition-colors duration-300">
                     {blog.title}
                   </h3>
+                  </Link>
                </article>
              ))}
           </motion.div>
