@@ -6,7 +6,10 @@ import { useTransition } from "@/contexts/TransitionContext";
 
 export default function TransitionLink({ href, children, ...props }) {
   const router = useRouter();
-  const { startTransition } = useTransition();
+
+  // ✅ Safe context usage (fixes build crash)
+  const transition = useTransition();
+  const startTransition = transition?.startTransition || (() => {});
 
   const handleTransition = (e) => {
     e.preventDefault();
