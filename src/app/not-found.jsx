@@ -1,3 +1,5 @@
+"use client";
+
 import TransitionLink from "./components/shared/TransitionLink";
 
 export default function NotFound() {
