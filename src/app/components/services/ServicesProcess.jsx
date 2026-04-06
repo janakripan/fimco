@@ -57,7 +57,7 @@ export default function ServicesProcess() {
               <StrokeText strokeColor="#0E2A47" strokeWidth="3px" fillColor="#ffffff">Experience</StrokeText>
             </h2>
             <p className="text-primary/60 font-montserrat text-lg leading-relaxed">
-              We've refined the property acquisition journey into four streamlined milestones, eliminating friction and maximizing value.
+              We&apos;ve refined the property acquisition journey into four streamlined milestones, eliminating friction and maximizing value.
             </p>
           </motion.div>
         </div>
@@ -65,7 +65,7 @@ export default function ServicesProcess() {
         {/* Right: Timeline */}
         <div className="w-full md:w-2/3 relative pl-8 md:pl-16">
           {/* Vertical Tracking Line */}
-          <div className="absolute top-0 bottom-0 left-0 w-[1px] bg-primary/10">
+          <div className="absolute top-0 bottom-0 left-0 w-px bg-primary/10">
             <motion.div
               style={{ height: pathHeight }}
               className="w-full bg-accent origin-top"

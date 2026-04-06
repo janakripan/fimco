@@ -21,7 +21,7 @@ function ReadingProgress() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 w-full h-[2px] z-[9999] bg-primary/10">
+    <div className="fixed top-0 left-0 w-full h-[2px] z-9999 bg-primary/10">
       <motion.div
         className="h-full bg-accent origin-left"
         style={{ scaleX: progress / 100 }}
@@ -50,8 +50,8 @@ function BlogDetailHero({ blog }) {
       {/* Parallax image */}
       <motion.div className="absolute inset-0" style={{ y }}>
         <Image src={blog.image} alt={blog.title} fill priority className="object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0E2A47] via-[#0E2A47]/65 to-[#0E2A47]/10" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0E2A47]/45 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-primary via-primary/65 to-primary/10" />
+        <div className="absolute inset-0 bg-linear-to-r from-primary/45 to-transparent" />
       </motion.div>
 
       {/* Dot grid */}
@@ -181,7 +181,7 @@ function TableOfContents({ headings }) {
           }`}
         >
           <div
-            className={`mt-1.5 w-4 h-px flex-shrink-0 transition-all duration-400 ${
+            className={`mt-1.5 w-4 h-px shrink-0 transition-all duration-400 ${
               active === i ? "bg-accent w-6" : "bg-primary/20 group-hover:w-5 group-hover:bg-primary/40"
             }`}
           />
@@ -294,7 +294,7 @@ function ContentBlock({ block, headingIndex }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="font-montserrat text-xl md:text-[22px] font-semibold text-primary leading-[1.7] mb-14 pl-6 border-l-[2px] border-accent"
+          className="font-montserrat text-xl md:text-[22px] font-semibold text-primary leading-[1.7] mb-14 pl-6 border-l-2 border-accent"
         >
           {block.text}
         </motion.p>
@@ -310,7 +310,7 @@ function ContentBlock({ block, headingIndex }) {
           transition={{ duration: 0.7 }}
           className="flex items-center gap-5 mt-20 mb-7 scroll-mt-28"
         >
-          <div className="w-7 h-px bg-accent flex-shrink-0" />
+          <div className="w-7 h-px bg-accent shrink-0" />
           <h2 className="font-montserrat font-bold text-primary text-2xl md:text-[28px] tracking-tight leading-tight">
             {block.text}
           </h2>
@@ -339,14 +339,14 @@ function ContentBlock({ block, headingIndex }) {
           transition={{ duration: 0.8 }}
           className="relative my-16"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/[0.04] to-transparent rounded-sm" />
+          <div className="absolute inset-0 bg-linear-to-r from-primary/4 to-transparent rounded-sm" />
           <div className="absolute left-0 top-3 bottom-3 w-[2px] bg-accent" />
           <div className="relative px-8 py-10">
             <span
               className="block font-oswald text-accent/60 text-[64px] leading-none mb-1 select-none"
               aria-hidden="true"
             >
-              "
+              
             </span>
             <blockquote className="font-oswald font-light text-primary text-[26px] md:text-[30px] leading-[1.45] tracking-tight mb-5">
               {block.text}
@@ -397,7 +397,7 @@ function ContentBlock({ block, headingIndex }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.09 }}
-              className="group bg-white hover:bg-[#fcfbf9] p-8 flex flex-col gap-2 border-r border-b border-primary/8 last:border-r-0 [&:nth-child(2)]:border-r-0 md:[&:nth-child(2)]:border-r transition-colors duration-300"
+              className="group bg-white hover:bg-[#fcfbf9] p-8 flex flex-col gap-2 border-r border-b border-primary/8 last:border-r-0 nth-2:border-r-0 md:nth-2:border-r transition-colors duration-300"
             >
               <span className="font-oswald font-bold text-primary text-[38px] md:text-[44px] tracking-tight leading-none">
                 {stat.value}
@@ -467,7 +467,7 @@ function AuthorCard({ blog }) {
         </span>
       </div>
 
-      <div className="relative w-20 h-20 flex-shrink-0 overflow-hidden rounded-full ring-2 ring-accent/20">
+      <div className="relative w-20 h-20 shrink-0 overflow-hidden rounded-full ring-2 ring-accent/20">
         <Image src={blog.authorImage} alt={blog.author} fill className="object-cover" />
       </div>
 
@@ -482,7 +482,7 @@ function AuthorCard({ blog }) {
           {blog.authorRole}
         </p>
         <p className="font-montserrat text-primary/55 text-sm leading-relaxed mt-2 max-w-md">
-          Expert commentary and rigorous analysis on Dubai's most consequential
+          Expert commentary and rigorous analysis on Dubai&apos;s most consequential
           real estate developments, architectural commissions, and market movements.
         </p>
       </div>
@@ -536,7 +536,7 @@ function RelatedArticles({ related }) {
             >
               <Link href={`/blogs/${r.slug}`}>
                 {/* Image */}
-                <div className="relative aspect-[4/3] overflow-hidden mb-6 rounded-[2px]">
+                <div className="relative aspect-4/3 overflow-hidden mb-6 rounded-[2px]">
                   <Image
                     src={r.image}
                     alt={r.title}
@@ -630,7 +630,7 @@ function CtaStrip() {
           </p>
         </div>
 
-        <div className="flex items-center gap-5 flex-shrink-0">
+        <div className="flex items-center gap-5 shrink-0">
           <Link
             href="/blogs"
             onMouseEnter={() => { setVariant("button"); setSize(90); setText("EXPLORE"); }}

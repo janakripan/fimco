@@ -91,7 +91,7 @@ export default function AboutTeam() {
                 setText("");
               }}
             >
-              <div className="relative aspect-[3/4] w-full mb-8 overflow-hidden bg-primary/5 rounded-sm">
+              <div className="relative aspect-3/4 w-full mb-8 overflow-hidden bg-primary/5 rounded-sm">
                 <Image
                   src={member.image}
                   alt={member.name}

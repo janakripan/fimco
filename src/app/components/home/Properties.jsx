@@ -144,15 +144,15 @@ const PropertyCard = ({ property, index }) => {
 
   if (property.layout === "text-left") {
     flexClass = "flex-col md:flex-row-reverse items-end md:gap-5";
-    imgWidth = "md:w-[68%]";
+    imgWidth = "w-full md:w-[68%]";
     textAlignment = "md:text-left md:pb-6";
   } else if (property.layout === "text-right-center") {
     flexClass = "flex-col md:flex-row items-center md:gap-6";
-    imgWidth = "md:w-[75%]";
+    imgWidth = "w-full md:w-[75%]";
     textAlignment = "md:text-left md:pt-0";
   } else if (property.layout === "text-left-center") {
     flexClass = "flex-col md:flex-row-reverse items-center md:gap-6";
-    imgWidth = "md:w-[75%]";
+    imgWidth = "w-full md:w-[75%]";
     textAlignment = "md:text-left md:pt-0";
   }
 
@@ -204,7 +204,7 @@ const PropertyCard = ({ property, index }) => {
       {/* Text */}
       <div className={`mt-3 px-1 ${property.layout ? "md:mt-0 flex-1" : ""} ${textAlignment}`}>
         <span className="flex items-center gap-2 text-primary/40 text-xs md:text-[11px] font-montserrat uppercase tracking-[0.2em] font-medium mb-3">
-          <span className="hidden md:inline-block w-4 h-px bg-primary/30 flex-shrink-0" />
+          <span className="hidden md:inline-block w-4 h-px bg-primary/30 shrink-0" />
           {property.location}
         </span>
 
@@ -324,7 +324,17 @@ export default function Properties() {
             </span>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-x-6 lg:gap-x-10 justify-between border-b border-primary/10 pb-20">
+          {/* MOBILE SLIDER */}
+          <div className="flex md:hidden overflow-x-auto gap-4 hide-scrollbar snap-x snap-mandatory pb-8 -mx-6 px-6">
+             {PROPERTIES_DATA.map((property, idx) => (
+               <div key={property.id} className="w-[85%] shrink-0 snap-center">
+                 <PropertyCard property={property} index={idx} />
+               </div>
+             ))}
+          </div>
+
+          {/* DESKTOP 2-COLUMN GRID */}
+          <div className="hidden md:flex flex-row gap-x-6 lg:gap-x-10 justify-between border-b border-primary/10 pb-20">
             {/* Left column */}
             <div className="w-full md:w-[40%] flex flex-col pt-0">
               {leftItems.map((property) => (
@@ -406,18 +416,18 @@ export default function Properties() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-10%" }}
                   transition={{ duration: 0.7, delay: idx * 0.1 }}
-                  className="w-[85vw] md:w-[400px] lg:w-[420px] flex-shrink-0 snap-start flex flex-col group cursor-pointer"
+                  className="w-[85vw] md:w-[400px] lg:w-[420px] shrink-0 snap-start flex flex-col group cursor-pointer"
                   onMouseEnter={() => { setVariant("link"); setSize(40); setText(""); }}
                   onMouseLeave={() => { setVariant("default"); setSize(24); setText(""); }}
                 >
-                  <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden mb-6 shadow-sm border border-primary/5">
+                  <div className="relative w-full aspect-4/3 rounded-xl overflow-hidden mb-6 shadow-sm border border-primary/5">
                     <Image
                       src={item.image}
                       alt={item.title}
                       fill
                       className="object-cover transition-transform duration-1000 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-linear-to-t from-[#0E2A47]/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                    <div className="absolute inset-0 bg-linear-to-t from-primary/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
                     <div className="absolute inset-y-0 left-2 flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="w-8 h-8 rounded-full bg-black/20 backdrop-blur-md flex items-center justify-center text-white cursor-pointer hover:bg-black/40">

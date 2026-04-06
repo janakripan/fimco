@@ -31,7 +31,7 @@ function Label({ text }) {
 
 function SpecRow({ label, value }) {
   return (
-    <div className="flex items-center justify-between py-3 border-b border-primary/[0.08] last:border-0">
+    <div className="flex items-center justify-between py-3 border-b border-primary/8 last:border-0">
       <span className="font-montserrat text-xs text-primary/50 uppercase tracking-widest">{label}</span>
       <span className="font-montserrat text-sm font-bold text-primary">{value}</span>
     </div>
@@ -91,21 +91,53 @@ export default function PropertyDetailClient({ property }) {
 
   return (
     <div className="bg-white">
-      {/* ═══ HERO GALLERY (KEPT FROM NEW DESIGN) ════════════════════════════ */}
-      <section className="w-full bg-white pt-24 pb-8 max-w-screen-xl mx-auto px-6 md:px-16 overflow-visible">
+      {/* ═══ HERO GALLERY (KEPT FROM NEW DESIGN + MOBILE SLIDER) ════════════ */}
+      <section className="w-full bg-white pt-24 pb-8 max-w-7xl mx-auto px-6 md:px-10 lg:px-16 overflow-visible">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-primary/40 font-montserrat text-[10px] uppercase tracking-[0.3em] flex-wrap mb-6">
-          <TransitionLink href="/property" className="hover:text-accent transition-colors">Properties</TransitionLink>
-          <span>/</span>
-          <span className="text-accent/80">{property.community}</span>
-          <span>/</span>
-          <span className="text-primary/60 truncate max-w-[200px]">{property.building}</span>
+        <div className="flex items-center gap-2 text-primary/50 font-montserrat text-[10px] sm:text-xs tracking-wider flex-wrap mb-4">
+          <TransitionLink href="/" className="hover:text-accent transition-colors underline decoration-primary/20 underline-offset-4">Back to search</TransitionLink>
+          <span className="text-primary/30 mx-1">|</span>
+          <TransitionLink href="/property" className="hover:text-accent transition-colors">Property For Sale in Dubai</TransitionLink>
+          <svg className="w-3 h-3 text-primary/30" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
+          <span className="hover:text-accent transition-colors cursor-pointer">{property.community}</span>
+          <svg className="w-3 h-3 text-primary/30" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
+          <span className="text-primary/70">{property.shortDesc.split(" | ")[0]}</span>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-4 h-[50vh] md:h-[60vh] min-h-[400px]">
-          {/* Main image */}
+        {/* --- MOBILE ONLY SLIDER --- */}
+        <div className="flex md:hidden gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-4 -mx-6 px-6">
+          {(property.images || []).map((src, i) => (
+            <div key={i} className="relative w-[85%] sm:w-[75%] shrink-0 h-[45vh] min-h-[350px] rounded-2xl overflow-hidden snap-center shadow-md">
+              <Image src={src} alt={`${property.title} photo ${i + 1}`} fill className="object-cover" priority={i === 0} />
+              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/50 via-black/10 to-transparent pointer-events-none" />
+              
+              {/* Badges on first mobile image */}
+              {i === 0 && (
+                <div className="absolute bottom-4 left-4 flex items-center gap-2">
+                  <div className="flex items-center gap-2 bg-white text-primary rounded-full px-4 py-2 shadow-md">
+                    <svg className="w-4 h-4 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    </svg>
+                    <span className="font-montserrat text-[11px] font-bold text-primary/80">{property.photoCount} photos</span>
+                  </div>
+                  <div className="flex items-center gap-2 bg-white text-primary rounded-full px-4 py-2 shadow-md">
+                     <span className="font-montserrat text-[11px] font-bold text-primary/80">Map</span>
+                  </div>
+                </div>
+              )}
+              {/* Watermark */}
+              <div className="absolute bottom-4 right-4 w-10 h-10 bg-primary/90 text-white rounded-full flex items-center justify-center shadow-lg pointer-events-none">
+                <span className="font-oswald text-xl font-bold">&amp;</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* --- DESKTOP GRID LAYOUT --- */}
+        <div className="hidden md:flex flex-row gap-4 h-[60vh] min-h-[350px]">
+          {/* Main Image (Left) */}
           <motion.div
-            className="relative flex-1 rounded-2xl overflow-hidden cursor-pointer shadow-md"
+            className="relative flex-1 rounded-2xl overflow-hidden cursor-pointer"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}
             onMouseEnter={() => { setVariant("button"); setSize(90); setText("ZOOM"); }}
             onMouseLeave={() => { setVariant("default"); setSize(24); setText(""); }}
@@ -117,62 +149,68 @@ export default function PropertyDetailClient({ property }) {
                 <Image src={property.images?.[activeImg] || ""} alt={property.title} fill className="object-cover" priority />
               </motion.div>
             </AnimatePresence>
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-            
-            <div className="absolute bottom-5 left-5 flex items-center gap-3 z-10">
-              <div className="flex items-center gap-2 bg-white text-primary rounded-full px-4 py-2 cursor-pointer shadow-lg hover:bg-gray-100 transition-colors">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+
+            {/* Bottom gradient */}
+            <div className="absolute inset-x-0 bottom-0 h-[40%] bg-linear-to-t from-black/50 via-black/10 to-transparent pointer-events-none" />
+
+            {/* Badges Bottom Left */}
+            <div className="absolute bottom-6 left-6 flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-2 bg-white text-primary rounded-full px-5 py-2.5 cursor-pointer shadow-md hover:bg-gray-100 transition-colors">
+                <svg className="w-4 h-4 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                 </svg>
-                <span className="font-montserrat text-[11px] font-bold">{property.photoCount} photos</span>
+                <span className="font-montserrat text-xs font-bold text-primary/80">{property.photoCount} photos</span>
               </div>
-              <div className="flex items-center gap-2 bg-white text-primary rounded-full px-4 py-2 cursor-pointer shadow-lg hover:bg-gray-100 transition-colors">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+              <div className="flex items-center gap-2 bg-white text-primary rounded-full px-5 py-2.5 cursor-pointer shadow-md hover:bg-gray-100 transition-colors">
+                <svg className="w-4 h-4 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span className="font-montserrat text-[11px] font-bold">Map</span>
+                <span className="font-montserrat text-xs font-bold text-primary/80">Map</span>
               </div>
             </div>
 
-            {/* Status */}
-            <span className={`absolute top-5 left-5 z-10 px-4 py-1.5 rounded-full font-montserrat text-[9px] uppercase tracking-[0.3em] font-bold ${property.status === "Ready" ? "bg-emerald-500/90 text-white" : "bg-accent text-primary"}`}>
-              {property.status}
-            </span>
-            <div className="absolute top-5 right-5 z-10 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center shadow-lg pointer-events-none">
-              <span className="font-oswald text-2xl font-bold">&amp;</span>
+            {/* Watermark logo bottom right */}
+            <div className="absolute bottom-6 right-6 w-14 h-14 bg-primary rounded-full flex items-center justify-center shadow-lg">
+              <span className="text-white font-oswald text-3xl font-bold">&amp;</span>
             </div>
           </motion.div>
 
-          {/* 2 vertical thumbnails */}
+          {/* 2 Vertical Thumbnails (Right) */}
           <div className="hidden md:flex flex-col w-[35%] gap-4">
             {thumbs.map((src, i) => (
               <motion.div key={i}
-                className="relative flex-1 rounded-2xl overflow-hidden cursor-pointer group shadow-sm bg-primary/10"
+                className="relative flex-1 rounded-2xl overflow-hidden cursor-pointer group shadow-md"
                 onClick={() => setActiveImg(i + 1)}
                 initial={{ opacity: 0, scale: 1.05 }} animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.55, delay: 0.1 + i * 0.08 }}
                 onMouseEnter={() => { setVariant("link"); setSize(50); setText(""); }}
                 onMouseLeave={() => { setVariant("default"); setSize(24); setText(""); }}
               >
-                {src && <Image src={src} alt={`Photo ${i + 2}`} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />}
-                <div className={`absolute inset-0 transition-opacity duration-300 ${activeImg === i + 1 ? "bg-accent/20" : "bg-primary/0 group-hover:bg-primary/20"}`} />
-                {i === 1 && (property.images || []).length > 3 && (
-                  <div className="absolute right-4 bottom-4 z-10 bg-primary/90 text-white flex items-center justify-center w-11 h-11 rounded-full font-montserrat text-sm font-bold shadow-lg">
-                    +{(property.images || []).length - 3}
-                  </div>
-                )}
+                <Image src={src} alt={`Photo ${i + 2}`} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                <div className={`absolute inset-0 transition-opacity duration-300 ${activeImg === i + 1 ? "bg-accent/20" : "bg-black/10 group-hover:bg-transparent"}`} />
+                
                 {/* First thumb: video tour badge */}
                 {i === 0 && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                     <div className="bg-white/90 backdrop-blur-md text-primary rounded-full px-5 py-2.5 flex items-center gap-2 shadow-lg">
                       <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                       <span className="font-montserrat text-[11px] font-bold">Watch video tour</span>
                     </div>
                   </div>
                 )}
-                {/* Watermark second image only */}
+
+                {/* Additional Images Counter overlay */}
+                {i === 1 && (property.images || []).length > 3 && (
+                  <div className="absolute inset-0 bg-primary/40 flex items-center justify-center pointer-events-none group-hover:bg-primary/20 transition-colors">
+                    <div className="bg-primary/95 text-white flex items-center justify-center w-14 h-14 rounded-full font-montserrat text-sm font-bold shadow-lg border border-white/20">
+                      +{(property.images || []).length - 3}
+                    </div>
+                  </div>
+                )}
+
+                {/* Watermark on second thumb */}
                 {i === 1 && (
-                  <div className="absolute left-4 bottom-4 w-10 h-10 bg-primary/90 text-white rounded-full flex items-center justify-center shadow-lg pointer-events-none z-10">
+                  <div className="absolute bottom-4 right-4 w-10 h-10 bg-primary/90 text-white rounded-full flex items-center justify-center shadow-lg pointer-events-none">
                     <span className="font-oswald text-xl font-bold">&amp;</span>
                   </div>
                 )}
@@ -184,7 +222,7 @@ export default function PropertyDetailClient({ property }) {
 
       {/* ═══ PRICE HEADER (REVERTED TO ORIGINAL) ════════════════════════════ */}
       <section className="w-full bg-white border-b border-primary/10">
-        <div className="max-w-screen-xl mx-auto px-6 md:px-16 py-8 flex flex-col md:flex-row md:items-start justify-between gap-6">
+        <div className="max-w-7xl mx-auto px-6 md:px-16 py-8 flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="flex flex-col gap-4">
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
               <p className="font-montserrat text-primary/40 text-[10px] uppercase tracking-[0.35em] mb-1.5">{property.community} · {property.building}</p>
@@ -242,7 +280,7 @@ export default function PropertyDetailClient({ property }) {
       </section>
 
       {/* ═══ TWO-COLUMN BODY (REVERTED TO ORIGINAL) ══════════════════════════ */}
-      <div className="max-w-screen-xl mx-auto px-6 md:px-16 py-16 flex flex-col lg:flex-row gap-12 lg:gap-16 items-start relative">
+      <div className="max-w-7xl mx-auto px-6 md:px-16 py-16 flex flex-col lg:flex-row gap-12 lg:gap-16 items-start relative">
 
         {/* ── LEFT ────────────────────────────────────────────────────── */}
         <div className="flex-1 min-w-0 flex flex-col gap-16">

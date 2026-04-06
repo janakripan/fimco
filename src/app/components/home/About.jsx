@@ -50,10 +50,10 @@ export default function About() {
       {/* Advanced Animated Scroll Section */}
       <section 
         ref={containerRef}
-        className="w-full h-[175vh] max-h-[2200px] relative flex flex-col md:flex-row bg-[#fcfbf9] px-4 md:px-8 lg:px-12 py-12 gap-8 lg:gap-14 overflow-hidden"
+        className="w-full max-md:h-auto md:h-[175vh] md:max-h-[2200px] relative flex flex-col md:flex-row bg-[#fcfbf9] px-6 md:px-8 lg:px-12 py-12 gap-8 lg:gap-14 overflow-hidden"
       >
         {/* Left Side: Image (60% width) */}
-        <div className="w-full md:w-3/5 h-1/2 md:h-full relative overflow-hidden rounded-sm shadow-xl">
+        <div className="w-full md:w-3/5 h-[50vh] min-h-[400px] md:min-h-0 md:h-full relative overflow-hidden rounded-sm shadow-xl shrink-0">
           <motion.div 
             style={{ scale: imageScale }}
             className="w-full h-full relative"
@@ -70,10 +70,10 @@ export default function About() {
         </div>
 
         {/* Right Side: Animated Text Track (40% width) */}
-        <div className="w-full md:w-2/5 h-1/2 md:h-full relative block">
+        <div className="w-full md:w-2/5 max-md:h-auto md:h-full relative block">
           <motion.div 
             style={{ y: textY }}
-            className="absolute top-0 w-full left-0 right-0 flex flex-col justify-center lg:pr-12"
+            className="max-md:transform-none! max-md:static! absolute top-0 w-full left-0 right-0 flex flex-col justify-center lg:pr-12 md:h-auto"
           >
              <h3 className="text-3xl md:text-4xl lg:text-5xl font-montserrat font-bold text-primary mb-6 leading-[1.15] tracking-tight">
                Uncompromising <br/> Excellence.
@@ -116,7 +116,7 @@ export default function About() {
             whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.33, 1, 0.68, 1] }}
-            className="flex-1 relative w-full aspect-[4/3] max-w-[600px]"
+            className="flex-1 relative w-full aspect-4/3 max-w-[600px]"
           >
             {/* Mockup Card 1 */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[85%] bg-blue-100/50 rounded-xl -rotate-12 shadow-lg z-0" />
