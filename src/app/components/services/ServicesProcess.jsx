@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import StrokeText from "@/utils/StrokeText";
 
 const PROCESS_STEPS = [
   {
@@ -53,7 +54,7 @@ export default function ServicesProcess() {
             </span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-montserrat font-bold text-primary mb-6 leading-[1.1] tracking-tight">
               A Seamless <br />
-              <span style={{ WebkitTextStroke: "1px #0E2A47", color: "transparent" }}>Experience</span>
+              <StrokeText strokeColor="#0E2A47" strokeWidth="3px" fillColor="#ffffff">Experience</StrokeText>
             </h2>
             <p className="text-primary/60 font-montserrat text-lg leading-relaxed">
               We've refined the property acquisition journey into four streamlined milestones, eliminating friction and maximizing value.

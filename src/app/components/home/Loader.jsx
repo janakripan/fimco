@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import StrokeText from "@/utils/StrokeText";
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -158,15 +159,14 @@ export default function Loader({ onComplete }) {
                   className="flex flex-col items-center gap-6"
                 >
                   {/* FIMCO big text */}
-                  <div
-                    className="text-[18vw] md:text-[14vw] font-oswald font-bold leading-none tracking-[-0.03em]"
-                    style={{
-                      WebkitTextStroke: "2px rgba(212,175,106,0.8)",
-                      color: "transparent",
-                    }}
+                  <StrokeText
+                    strokeColor="rgba(212,175,106,0.8)"
+                    strokeWidth="3px"
+                    fillColor="#0E2A47"
+                    className="text-[18vw] md:text-[14vw] font-oswald font-bold leading-none tracking-[-0.03em] block"
                   >
                     FIMCO
-                  </div>
+                  </StrokeText>
                   {/* Tagline scramble */}
                   <div className="text-accent/80 font-montserrat text-[10px] md:text-xs uppercase tracking-[0.5em] overflow-hidden">
                     <ScrambleText

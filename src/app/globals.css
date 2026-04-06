@@ -26,3 +26,12 @@
 body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+/* Utility: hide scrollbar while keeping scroll functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

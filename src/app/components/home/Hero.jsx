@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import TransitionLink from "../shared/TransitionLink";
+import StrokeText from "@/utils/StrokeText";
 
 /* ─── Marquee ticker ─────────────────────────────────────────── */
 const TICKER_ITEMS = [
@@ -47,11 +48,7 @@ function WordReveal({ text, className, delay = 0, stroke = false }) {
         <span key={i} className="inline-block overflow-hidden mr-[0.25em]">
           <motion.span
             className="inline-block"
-            style={
-              stroke
-                ? { WebkitTextStroke: "2px #ffffff", color: "transparent" }
-                : {}
-            }
+            style={stroke ? {} : {}}
             initial={{ y: "110%", opacity: 0 }}
             animate={{ y: "0%", opacity: 1 }}
             transition={{
@@ -60,7 +57,11 @@ function WordReveal({ text, className, delay = 0, stroke = false }) {
               delay: delay + i * 0.1,
             }}
           >
-            {word}
+            {stroke ? (
+              <StrokeText strokeColor="#ffffff" strokeWidth="3px" fillColor="#0E2A47">
+                {word}
+              </StrokeText>
+            ) : word}
           </motion.span>
         </span>
       ))}

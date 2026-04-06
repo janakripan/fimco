@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useCursor } from "@/contexts/CursorContext";
+import StrokeText from "@/utils/StrokeText";
 
 const TEAM_MEMBERS = [
   {
@@ -49,12 +50,9 @@ export default function AboutTeam() {
             </span>
             <h2 className="text-5xl md:text-7xl lg:text-8xl font-montserrat tracking-tight flex flex-row flex-wrap items-center gap-4 leading-[0.85]">
               <span className="font-bold text-primary capitalize">Our</span>
-              <span
-                className="capitalize"
-                style={{ WebkitTextStroke: "2px #0E2A47", color: "transparent" }}
-              >
+              <StrokeText strokeColor="#0E2A47" strokeWidth="3px" fillColor="#fcfbf9" className="capitalize">
                 Team
-              </span>
+              </StrokeText>
             </h2>
           </motion.div>
 

@@ -10,6 +10,7 @@ import {
 import TransitionLink from "../shared/TransitionLink";
 import { useCursor } from "@/contexts/CursorContext";
 import CustomArrow from "../icons/CustomArrow";
+import StrokeText from "@/utils/StrokeText";
 
 /* ─── Single contact channel card ───────────────────────────── */
 function ChannelCard({ icon, label, value, href, delay }) {
@@ -176,12 +177,10 @@ export default function Contact() {
                     delay: 0.1,
                   }}
                   className="text-[13vw] sm:text-[10vw] lg:text-[7vw] font-montserrat font-bold leading-[0.88] tracking-tight"
-                  style={{
-                    WebkitTextStroke: "2px #0E2A47",
-                    color: "transparent",
-                  }}
                 >
-                  A Conversation
+                  <StrokeText strokeColor="#0E2A47" strokeWidth="3px" fillColor="#ffffff">
+                    A Conversation
+                  </StrokeText>
                 </motion.h2>
               </div>
             </div>

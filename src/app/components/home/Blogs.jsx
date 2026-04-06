@@ -6,6 +6,7 @@ import { motion, useAnimation, useMotionValue, useAnimationFrame } from "framer-
 import TransitionLink from "../shared/TransitionLink";
 import { useCursor } from "@/contexts/CursorContext";
 import CustomArrow from "../icons/CustomArrow";
+import StrokeText from "@/utils/StrokeText";
 
 const BLOGS_DATA = [
   {
@@ -119,12 +120,9 @@ export default function Blogs() {
       <div className="flex justify-between items-end mb-16 gap-6">
         <h2 className="text-5xl md:text-8xl font-montserrat tracking-normal flex flex-row items-center gap-4 leading-[0.85]">
           <span className="font-bold text-black capitalize">Latest</span>
-          <span
-            className="capitalize"
-            style={{ WebkitTextStroke: "1.5px #000", color: "transparent" }}
-          >
+          <StrokeText strokeColor="#000000" strokeWidth="2.5px" fillColor="#ffffff" className="capitalize">
             News
-          </span>
+          </StrokeText>
         </h2>
 
         <TransitionLink
@@ -192,15 +190,14 @@ export default function Blogs() {
 
                 {/* Blurred Overlay - Fades out on hover */}
                 <div className="absolute inset-0 bg-black/20 backdrop-blur-md transition-opacity duration-500 group-hover:opacity-0 flex items-center justify-center">
-                  <span
-                    className="text-white text-5xl md:text-7xl font-oswald uppercase tracking-widest text-center px-4"
-                    style={{
-                      WebkitTextStroke: "1px #fff",
-                      color: "transparent",
-                    }}
+                  <StrokeText
+                    strokeColor="#ffffff"
+                    strokeWidth="3px"
+                    fillColor="rgba(0,0,0,0.2)"
+                    className="text-5xl md:text-7xl font-oswald uppercase tracking-widest text-center px-4"
                   >
                     {blog.category}
-                  </span>
+                  </StrokeText>
                   {/* Optional Grid Pattern */}
                   <div
                     className="absolute inset-0 opacity-10 pointer-events-none"
