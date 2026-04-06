@@ -1,6 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { newsletterSchema } from "@/constants/validations";
 
 /**
  * 🧱 BLOG NEWSLETTER
@@ -8,6 +10,41 @@ import { motion } from "framer-motion";
  * Minimalist, dark-themed newsletter signup for the Blogs page.
  */
 export default function BlogNewsletter() {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
+    setIsSuccess(false);
+
+    try {
+      await newsletterSchema.validate({ email }, { abortEarly: false, stripUnknown: true });
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      setIsSuccess(true);
+      setEmail("");
+    } catch (err) {
+      if (err.inner && err.inner.length > 0) {
+        setError(err.inner[0].message);
+      } else {
+        setError(err.message);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    setEmail(e.target.value);
+    if (error) setError("");
+  };
+
   return (
     <section className="w-full py-24 md:py-32 px-6 md:px-16 lg:px-24 bg-primary relative overflow-hidden">
       
@@ -31,18 +68,50 @@ export default function BlogNewsletter() {
             Subscribe to our <br /> Intelligence Brief.
           </h2>
 
-          <form className="flex flex-col md:flex-row items-center gap-4 max-w-2xl mx-auto">
-            <input 
-              type="email" 
-              placeholder="Your Email Address"
-              className="w-full bg-white/5 border border-white/20 px-8 py-5 rounded-sm font-montserrat text-white focus:outline-hidden focus:border-accent transition-all duration-300"
-            />
-            <button 
-              type="submit"
-              className="w-full md:w-auto shrink-0 bg-accent hover:bg-accent/80 px-12 py-5 rounded-sm font-montserrat font-bold text-white uppercase tracking-widest text-sm transition-all duration-300"
-            >
-              Sign Up
-            </button>
+          <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 max-w-2xl mx-auto">
+            <div className="flex flex-col md:flex-row items-center gap-4 w-full relative">
+              <div className="w-full relative">
+                <input 
+                  type="email" 
+                  value={email}
+                  onChange={handleChange}
+                  placeholder="Your Email Address"
+                  className={`w-full bg-white/5 border px-8 py-5 rounded-sm font-montserrat text-white focus:outline-hidden transition-all duration-300 ${error ? 'border-red-500' : 'border-white/20 focus:border-accent'}`}
+                />
+                <AnimatePresence>
+                  {error && (
+                    <motion.span 
+                      initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} 
+                      className="absolute -bottom-6 left-2 text-red-500 text-[10px] font-montserrat font-medium text-left"
+                    >
+                      {error}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </div>
+              <button 
+                type="submit"
+                disabled={isSubmitting}
+                className={`w-full md:w-auto shrink-0 bg-accent hover:bg-accent/80 px-12 py-5 rounded-sm font-montserrat font-bold text-white uppercase tracking-widest text-sm transition-all duration-300 ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                {isSubmitting ? "Wait" : "Sign Up"}
+              </button>
+            </div>
+            
+            <AnimatePresence>
+              {isSuccess && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 5 }} 
+                  animate={{ opacity: 1, y: 0 }} 
+                  exit={{ opacity: 0 }}
+                  className="w-full text-left"
+                >
+                  <p className="font-montserrat text-accent text-xs font-bold uppercase tracking-widest mt-4 text-center md:text-left md:ml-2">
+                    Successfully Subscribed!
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </form>
 
           <p className="mt-8 text-white/30 font-montserrat text-xs tracking-wide">

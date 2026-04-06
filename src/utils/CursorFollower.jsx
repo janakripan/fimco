@@ -54,17 +54,27 @@ export default function CursorFollower() {
 
     // Global a/button hover listener
     const handleMouseOver = (e) => {
-      const target = e.target.closest("a, button, [role='button']");
-      const related = e.relatedTarget?.closest?.("a, button, [role='button']");
+      const target = e.target.closest("a, button, [role='button'], [data-cursor]");
+      const related = e.relatedTarget?.closest?.("a, button, [role='button'], [data-cursor]");
+      
       if (target && target !== related) {
-        setVariant("link");
-        setSize(60);
+        // Explicit data override takes priority to avoid race conditions
+        const customVariant = target.getAttribute("data-cursor");
+        if (customVariant) {
+          setVariant(customVariant);
+          setSize(parseInt(target.getAttribute("data-cursor-size")) || (customVariant === "button" ? 80 : 60));
+          setText(target.getAttribute("data-cursor-text") || "");
+        } else {
+          setVariant("link");
+          setSize(60);
+          setText("");
+        }
       }
     };
 
     const handleGlobalMouseOut = (e) => {
-      const target = e.target.closest("a, button, [role='button']");
-      const related = e.relatedTarget?.closest?.("a, button, [role='button']");
+      const target = e.target.closest("a, button, [role='button'], [data-cursor]");
+      const related = e.relatedTarget?.closest?.("a, button, [role='button'], [data-cursor]");
       if (target && target !== related) {
         // Fallback to default
         setVariant("default");
@@ -98,7 +108,7 @@ export default function CursorFollower() {
       background: "transparent",
       border: "2px solid #D4AF6A",
     },
-    button: {
+    button: { 
       background: "#D4AF6A",
       border: "none",
     },

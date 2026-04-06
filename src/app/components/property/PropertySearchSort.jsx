@@ -1,30 +1,61 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { searchSchema } from "@/constants/validations";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function PropertySearchSort() {
   const [activeTab, setActiveTab] = useState("All");
   const [sortBy, setSortBy] = useState("Newest");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchError, setSearchError] = useState("");
+
+  const handleSearchChange = async (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    
+    try {
+      await searchSchema.validate({ searchQuery: value });
+      setSearchError(""); // Clear error if valid
+    } catch (err) {
+      setSearchError(err.message);
+    }
+  };
 
   return (
     <section className="w-full bg-white border-b border-primary/10 py-6 px-6 md:px-16 lg:px-24 sticky top-[80px] z-40 shadow-[0_10px_30px_rgba(0,0,0,0.02)]">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-6">
         
         {/* Text Filter Input */}
-        <div className="flex w-full lg:w-auto items-center gap-3 bg-[#fcfbf9] border border-primary/10 rounded-sm px-4 py-3 focus-within:border-accent/40 transition-colors">
-          <svg className="w-5 h-5 text-primary/40 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input 
-            type="text" 
-            placeholder="Search by community or property ID..." 
-            className="bg-transparent outline-none font-montserrat text-sm w-full lg:w-[280px] text-primary placeholder:text-primary/40"
-          />
+        <div className="relative w-full lg:w-auto">
+          <div className={`flex w-full items-center gap-3 bg-[#fcfbf9] border rounded-sm px-4 py-3 transition-colors ${searchError ? 'border-red-500' : 'border-primary/10 focus-within:border-accent/40'}`}>
+            <svg className={`w-5 h-5 shrink-0 ${searchError ? 'text-red-500' : 'text-primary/40'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input 
+              type="text" 
+              value={searchQuery}
+              onChange={handleSearchChange}
+              placeholder="Search by community or property ID..." 
+              className="bg-transparent outline-none font-montserrat text-sm w-full lg:w-[280px] text-primary placeholder:text-primary/40"
+            />
+          </div>
+          <AnimatePresence>
+            {searchError && (
+              <motion.span 
+                initial={{ opacity: 0, y: -5 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                exit={{ opacity: 0 }} 
+                className="absolute -bottom-5 left-0 text-red-500 text-[10px] font-montserrat font-medium whitespace-nowrap"
+              >
+                {searchError}
+              </motion.span>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Category Toggles */}
-        <div className="flex w-full lg:w-auto overflow-x-auto no-scrollbar gap-2 md:gap-4 pb-2 lg:pb-0 hide-scrollbar">
+        <div className="flex w-full lg:w-auto overflow-x-auto no-scrollbar gap-2 md:gap-4 pb-2 lg:pb-0 hide-scrollbar pt-4 lg:pt-0">
           {["All", "Villas & Townhouses", "Penthouses", "Off-Plan", "Commercial"].map(tab => (
             <button
               key={tab}

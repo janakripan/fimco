@@ -81,25 +81,16 @@ export default function About() {
              <p className="text-base md:text-lg text-primary/60 font-montserrat leading-relaxed max-w-sm md:max-w-md mb-10">
                From the iconic Palm Jumeirah to the ultra-modern skyline of Downtown Dubai, we provide unparalleled access to the most exclusive off-market listings. Discretion, expertise, and a visionary approach to investment define our legacy.
              </p>
-             <TransitionLink href="/about" className="inline-block w-fit">
-               <motion.button 
-                 onMouseEnter={() => {
-                   setVariant("link");
-                   setSize(60);
-                   setText("");
-                 }}
-                 onMouseLeave={() => {
-                   setVariant("default");
-                   setSize(24);
-                   setText("");
-                 }}
-                 className="group relative px-8 md:px-10 py-4 md:py-5 border border-primary/20 text-primary font-montserrat text-[10px] md:text-[11px] uppercase tracking-[0.2em] font-bold overflow-hidden shadow-sm rounded-full transition-colors duration-300"
-               >
+             <TransitionLink 
+                href="/about" 
+                className="group relative inline-block w-fit px-8 md:px-10 py-4 md:py-5 border border-primary/20 text-primary font-montserrat text-[10px] md:text-[11px] uppercase tracking-[0.2em] font-bold overflow-hidden shadow-sm rounded-full transition-colors duration-300"
+                data-cursor="link"
+                data-cursor-size="60"
+             >
                  <span className="relative z-10 transition-colors duration-500 group-hover:text-white">
                    Read Our Story
                  </span>
                  <div className="absolute inset-0 w-full h-full bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]" />
-               </motion.button>
              </TransitionLink>
           </motion.div>
         </div>
@@ -164,34 +155,20 @@ export default function About() {
             
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
               <button 
-                onMouseEnter={() => {
-                  setVariant("link");
-                  setSize(60);
-                  setText("");
-                }}
-                onMouseLeave={() => {
-                  setVariant("default");
-                  setSize(24);
-                  setText("");
-                }}
+                data-cursor="button"
+                data-cursor-size="80"
+                 data-cursor-text="View"
                 className="bg-accent text-white px-10 py-5 rounded-full font-montserrat font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-secondary transition-colors duration-300 w-full sm:w-auto shadow-lg"
               >
-                View Detailed Brochure
+                Detailed Brochure
               </button>
               <button 
-                onMouseEnter={() => {
-                  setVariant("link");
-                  setSize(60);
-                  setText("");
-                }}
-                onMouseLeave={() => {
-                  setVariant("default");
-                  setSize(24);
-                  setText("");
-                }}
+                data-cursor="button"
+                data-cursor-size="80"
+                data-cursor-text="Download"
                 className="border border-accent/20 text-accent px-10 py-5 rounded-full font-montserrat font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-accent/5 transition-colors duration-300 w-full sm:w-auto"
               >
-                Download Investment Portfolio
+                Download Portfolio
               </button>
             </div>
           </motion.div>
