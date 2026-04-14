@@ -7,6 +7,8 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useCursor } from "@/contexts/CursorContext";
 import { usePathname } from "next/navigation";
+import MobileDrawer from "./MobileDrawer";
+
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,6 +18,8 @@ export default function Header() {
   const burgerRef = useRef(null);
   const line1Ref = useRef(null);
   const line2Ref = useRef(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
 
 
   useEffect(() => {
@@ -69,20 +73,29 @@ export default function Header() {
   }, { dependencies: [isScrolled, isHovered], scope: containerRef });
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 transition-all duration-500 py-6 pointer-events-none">
-      <div className={`max-w-screen-2xl mx-auto px-12 h-12 flex items-center justify-between transition-all duration-500 pointer-events-auto`}>
+    <header className="fixed top-0 left-0 w-full z-50 transition-all duration-500 py-4 lg:py-6 pointer-events-none">
+      <div className={`max-w-screen-2xl mx-auto px-6 lg:px-12 h-12 flex items-center justify-between transition-all duration-500 pointer-events-auto`}>
         
         {/* Logo */}
         <TransitionLink href="/" className="text-2xl md:text-3xl font-bold text-secondary tracking-tighter flex items-center gap-1 group">
           FIMCO<span className="text-accent group-hover:scale-125 transition-transform duration-300">.</span>
         </TransitionLink>
 
-        {/* Navigation Wrapper - Invisible per request, but captures hover */}
+        {/* Mobile menu trigger */}
+        <button
+          onClick={() => setIsDrawerOpen(true)}
+          className="lg:hidden flex flex-col justify-center items-end gap-1.5 p-2 pointer-events-auto"
+        >
+          <span className="w-6 h-[1.5px] bg-secondary rounded-full"></span>
+          <span className="w-4 h-[1.5px] bg-secondary rounded-full"></span>
+        </button>
+
+        {/* Navigation Wrapper - Desktop only (lg and up) */}
         <div 
           ref={containerRef}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className={`flex items-center gap-8 py-2 px-2 transition-all duration-500`}
+          className={`hidden lg:flex items-center gap-8 py-2 px-2 transition-all duration-500`}
         >
           {/* Navigation Links */}
           <nav ref={linksWrapRef} className="flex items-center gap-8">
@@ -96,14 +109,21 @@ export default function Header() {
             </div>
           </nav>
 
-          {/* Hamburger Icon */}
+          {/* Hamburger Icon (Desktop Scroll Triggered) */}
           <div ref={burgerRef} className="w-5 h-5 flex flex-col justify-center items-end gap-1.5 opacity-0">
             <span ref={line1Ref} className="w-5 h-[1.2px] bg-primary rounded-full"></span>
             <span ref={line2Ref} className="h-[1.2px] bg-primary rounded-full"></span>
           </div>
         </div>
       </div>
+
+      {/* Mobile Drawer */}
+      <MobileDrawer 
+        isOpen={isDrawerOpen} 
+        onClose={() => setIsDrawerOpen(false)} 
+      />
     </header>
+
   );
 }
 
@@ -172,7 +192,7 @@ function NavLink({ href, label, highlight }) {
       <span className="relative z-10">{label}</span>
       <span 
         ref={underlineRef}
-        className={`absolute bottom-0 left-0 w-full h-[1.5px] opacity-0 -translate-x-full pointer-events-none transition-none ${highlight ? 'bg-accent' : 'bg-primary'}`}
+        className={`absolute bottom-0 left-0 w-full h-[1.5px] opacity-0 -translate-x-full pointer-events-none transition-none ${highlight ? 'bg-primary' : 'bg-accent'}`}
       ></span>
     </TransitionLink>
   );

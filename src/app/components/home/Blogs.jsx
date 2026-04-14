@@ -115,7 +115,7 @@ export default function Blogs() {
   };
 
   return (
-    <section className="w-full min-h-screen bg-white py-20 px-6 md:px-16 lg:px-24 flex flex-col overflow-hidden select-none">
+    <section className="w-full md:min-h-screen bg-white py-20 px-6 md:px-16 lg:px-24 flex flex-col overflow-hidden select-none">
       {/* Header */}
       <div className="flex justify-between items-end mb-16 gap-6">
         <h2 className="text-5xl md:text-8xl font-montserrat tracking-normal flex flex-row items-center gap-4 leading-[0.85]">

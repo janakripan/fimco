@@ -12,12 +12,14 @@ export default function TransitionLink({ href, children, ...props }) {
   const startTransition = transition?.startTransition || (() => {});
 
   const handleTransition = (e) => {
-    e.preventDefault();
-    
-    // Only transition if it's a new page
-    const currentPath = window.location.pathname;
-    if (currentPath === href) return;
+    // 1. Execute passed onClick (e.g., to close mobile drawer)
+    if (props.onClick) props.onClick(e);
 
+    // 2. Only transition if it's a new page and hasn't been prevented
+    const currentPath = window.location.pathname;
+    if (currentPath === href || e.defaultPrevented) return;
+
+    e.preventDefault();
     startTransition();
 
     // Wait for the animation to cover the screen

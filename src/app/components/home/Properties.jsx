@@ -266,9 +266,9 @@ export default function Properties() {
 
   return (
     <>
-      <section className="w-full bg-white py-24 md:py-48 px-6 md:px-16 lg:px-24 overflow-hidden">
+      <section className="w-full bg-white py-12 md:py-48 px-6 md:px-16 lg:px-24 overflow-hidden">
         {/* ── Header ── */}
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start mb-40 gap-12 lg:gap-24 relative z-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start mb-20 md:mb-40 gap-12 lg:gap-24 relative z-10">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -325,7 +325,7 @@ export default function Properties() {
           </div>
 
           {/* MOBILE SLIDER */}
-          <div className="flex md:hidden overflow-x-auto gap-4 hide-scrollbar snap-x snap-mandatory pb-8 -mx-6 px-6">
+          <div className="flex md:hidden overflow-x-auto gap-4 hide-scrollbar snap-x snap-mandatory pb-5 -mx-6 px-6">
              {PROPERTIES_DATA.map((property, idx) => (
                <div key={property.id} className="w-[85%] shrink-0 snap-center">
                  <PropertyCard property={property} index={idx} />
@@ -351,7 +351,7 @@ export default function Properties() {
         </div>
 
         {/* ── Off-plan carousel ── */}
-        <div className="max-w-[1400px] mx-auto pt-40 relative">
+        <div className="max-w-[1400px] mx-auto pt-20 md:pt-40 relative">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6 px-2 lg:px-0">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -406,7 +406,7 @@ export default function Properties() {
 
             <div
               ref={carouselRef}
-              className="flex overflow-x-auto gap-6 pb-12 pt-4 px-6 md:px-0 snap-x snap-mandatory hide-scrollbar relative"
+              className="flex overflow-x-auto gap-6 pb-6 md:pb-12 pt-4 px-6 md:px-0 snap-x snap-mandatory hide-scrollbar relative"
               style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}
             >
               {OFFPLAN_DATA.map((item, idx) => (

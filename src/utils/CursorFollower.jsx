@@ -117,6 +117,7 @@ export default function CursorFollower() {
   return (
     <div
       ref={ref}
+      className="hidden lg:flex items-center justify-center"
       style={{
         position: "fixed",
         inset: 0,
@@ -125,9 +126,6 @@ export default function CursorFollower() {
         borderRadius: "50%",
         pointerEvents: "none",
         zIndex: 999999,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
         fontSize: "12px",
         color: variant === "link" ? "#D4AF6A" : "white",
         transition:

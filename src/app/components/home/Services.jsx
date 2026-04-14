@@ -42,7 +42,7 @@ export default function Services() {
   };
 
   return (
-    <section className="w-full min-h-screen bg-white py-24 md:py-32 px-6 md:px-16 lg:px-24 flex flex-col overflow-hidden">
+    <section className="w-full min-h-screen bg-white py-8 md:py-32 px-6 md:px-16 lg:px-24 flex flex-col overflow-hidden">
       {/* Header Section: Styled like Blogs with Title Left, Desc Right */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8 md:gap-16">
         <motion.div
@@ -216,4 +216,4 @@ export default function Services() {
       </div>
     </section>
   );
-}
+}
